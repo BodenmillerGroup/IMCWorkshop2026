@@ -248,5 +248,3 @@ docker image prune -f
 The container exposes two ports:
 - **8787**: RStudio Server (R analysis)
 - **8888**: Jupyter Lab (Python analysis)
-
-Both services start automatically and run in the background when the container starts.
