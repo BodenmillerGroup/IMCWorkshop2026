@@ -37,14 +37,14 @@ Session 3-5 will be conducted in R. The R markdown scripts can be found in the i
 | ----------- | ------------------------------------------------------------------- |
 | 9.00h | Troubleshooting session |
 | 10.00h | Welcome and coffee |
-| 10.15h      | [Introduction](https://docs.google.com/presentation/d/1Jh4HZgL5eJyAF5Tx8C0KY7QS9pHkLyhzQ-g6uhtLMfQ/edit?usp=sharing) |
-| 10.30h      | [Image visualization](https://docs.google.com/presentation/d/1IUnl2lz3iU_D_0grOAbYyBeVrPQDU1dI-RHlX0dt4ko/edit?usp=sharing)                           |
+| 10.15h      | [Introduction](link or PDF) |
+| 10.30h      | [Image visualization](link or PDF)                           |
 | 11.00h      | Hands-on training: image visualization                           |
 | 11.30h      | Lunch                        |
-| 12.30h      | [Image processing](https://docs.google.com/presentation/d/1465DGNcyM7nz7ffH-EQ1SVO0oSQm0kZcrkKjeauY-9M/edit?usp=sharing) |
+| 12.30h      | [Image processing](link or PDF) |
 | 13.00h      | Hands-on training: image processing         |
 | 14.30h      | Coffee break   |
-| 15.00h      | [Reading data into R and visualization](https://docs.google.com/presentation/d/1pOqtJfOQym8Hp6DbMGkZTGivP00zjiIXQ6Dw5mRQpuY/edit?usp=sharing) |
+| 15.00h      | [Reading data into R and visualization](link or PDF) |
 | 15.30h      | Hands-on training: reading data into R and visualization    |
 
 **10.04.2026**
