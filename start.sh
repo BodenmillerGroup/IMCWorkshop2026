@@ -7,7 +7,7 @@ mkdir -p /home/rstudio/work
 
 cd /home/rstudio/work
 
-exec micromamba run -n py-imc jupyter lab \
+exec micromamba run -n imc jupyter lab \
   --ip=0.0.0.0 \
   --port=8888 \
   --no-browser \

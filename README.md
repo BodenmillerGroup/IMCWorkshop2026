@@ -37,7 +37,7 @@ Session 3-5 will be conducted in R. The R markdown scripts can be found in the i
 | ----------- | ------------------------------------------------------------------- |
 | 9.00h       | Troubleshooting session                                             |
 | 10.00h      | Welcome and coffee                                                  |
-| 10.15h      | [Introduction](link or PDF)                                         |
+| 10.15h      | [Introduction](link to PDF)                                         |
 | 10.30h      | [Image processing](link or PDF)                                     |
 | 11.00h      | Hands-on training: image processing                                 |
 | 12.30h      | Lunch                                                               |

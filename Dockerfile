@@ -43,14 +43,17 @@ RUN arch="$(uname -m)"; \
 
 # ---- Python env: IMC tools ----
 RUN --mount=type=cache,target=/opt/micromamba/pkgs \
-    micromamba create -y -n py-imc -c conda-forge \
+    micromamba create -y -n imc -c conda-forge \
     python=3.11 pip \
     numpy scipy pandas scikit-image scikit-learn \
     tifffile imagecodecs \
     libstdcxx-ng libgcc-ng \
     && micromamba clean -a -y
 
-RUN micromamba run -n py-imc pip install --no-cache-dir \
+# ---- NEW: napari install needed for CLI in steinbock
+RUN micromamba install -n imc -c conda-forge -y napari pyqt
+
+RUN micromamba run -n imc pip install --no-cache-dir \
     "steinbock[imc,cellpose]" \
     "cellpose" \
     "instanseg-torch" \
@@ -59,17 +62,17 @@ RUN micromamba run -n py-imc pip install --no-cache-dir \
 
 # ---- Python env: IMC_Denoise ----
 RUN --mount=type=cache,target=/opt/micromamba/pkgs \
-    micromamba create -y -n py-denoise -c conda-forge \
+    micromamba create -y -n denoise -c conda-forge \
     python=3.11 pip \
     numpy scipy pandas \
     tensorflow-cpu \
     && micromamba clean -a -y
 
-RUN micromamba run -n py-denoise pip install --no-cache-dir \
+RUN micromamba run -n denoise pip install --no-cache-dir \
     "git+https://github.com/PENGLU-WashU/IMC_Denoise.git" \
     "ipykernel"
 
-ENV LD_LIBRARY_PATH=/opt/micromamba/envs/py-imc/lib:/opt/micromamba/envs/py-denoise/lib:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH=/opt/micromamba/envs/imc/lib:/opt/micromamba/envs/denoise/lib:${LD_LIBRARY_PATH}
 
 RUN R -q -e 'options(repos=c(CRAN="https://cloud.r-project.org")); \
     if (!requireNamespace("BiocManager", quietly=TRUE)) install.packages("BiocManager"); \
@@ -84,26 +87,26 @@ COPY install_r_packages.R /tmp/install_r_packages.R
 RUN Rscript /tmp/install_r_packages.R
 
 # ---- Convenience wrappers ----
-RUN printf '#!/usr/bin/env bash\nexec micromamba run -n py-imc python "$@"\n' > /usr/local/bin/python-imc \
-    && printf '#!/usr/bin/env bash\nexec micromamba run -n py-denoise python "$@"\n' > /usr/local/bin/python-denoise \
-    && printf '#!/usr/bin/env bash\nexec micromamba run -n py-imc cellpose "$@"\n' > /usr/local/bin/cellpose \
-    && printf '#!/usr/bin/env bash\nexec micromamba run -n py-imc steinbock "$@"\n' > /usr/local/bin/steinbock_py \
-    && printf '#!/usr/bin/env bash\nexec micromamba run -n py-denoise python -c "import IMC_Denoise; print(\"IMC_Denoise OK\")"\n' > /usr/local/bin/imc_denoise_py \
+RUN printf '#!/usr/bin/env bash\nexec micromamba run -n imc python "$@"\n' > /usr/local/bin/python-imc \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n denoise python "$@"\n' > /usr/local/bin/python-denoise \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n imc cellpose "$@"\n' > /usr/local/bin/cellpose \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n imc steinbock "$@"\n' > /usr/local/bin/steinbock_py \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n denoise python -c "import IMC_Denoise; print(\"IMC_Denoise OK\")"\n' > /usr/local/bin/imc_denoise_py \
     && chmod +x /usr/local/bin/python-imc /usr/local/bin/python-denoise /usr/local/bin/cellpose /usr/local/bin/steinbock_py /usr/local/bin/imc_denoise_py
 
 # ---- Smoke tests ----
-RUN micromamba run -n py-imc python -c "import steinbock, cellpose, instanseg; print('py-imc OK')" \
-    && micromamba run -n py-denoise python -c "import tensorflow as tf; print('TF OK', tf.__version__)" \
-    && micromamba run -n py-denoise python -c "import IMC_Denoise; print('IMC_Denoise OK')" \
+RUN micromamba run -n imc python -c "import steinbock, cellpose, instanseg; print('imc OK')" \
+    && micromamba run -n denoise python -c "import tensorflow as tf; print('TF OK', tf.__version__)" \
+    && micromamba run -n denoise python -c "import IMC_Denoise; print('IMC_Denoise OK')" \
     && R -q -e "library(CATALYST); library(scater); library(imcRtools); library(cytomapper); library(Rphenograph); cat('R OK\\n')"
 
 # ---- Jupyter kernels ----
-RUN micromamba run -n py-imc python -m ipykernel install \
-    --name py-imc \
+RUN micromamba run -n imc python -m ipykernel install \
+    --name imc \
     --display-name "Python (IMC tools)"
 
-RUN micromamba run -n py-denoise python -m ipykernel install \
-    --name py-denoise \
+RUN micromamba run -n denoise python -m ipykernel install \
+    --name denoise \
     --display-name "Python (IMC denoise)"
 
 EXPOSE 8787

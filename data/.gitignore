@@ -7,3 +7,8 @@ images.rds
 masks.rds
 spe.rds
 sm.csv
+dimr_winsize_5/
+raw/
+*.csv
+*.tiff
+*.ipynb_checkpoints
