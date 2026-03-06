@@ -31,34 +31,36 @@ Session 3-5 will be conducted in R. The R markdown scripts can be found in the i
 
 ## Presentations and schedule
 
-**09.04.2026**
+**Thursday, 09.04.2026**
 
 | Time (CET)  | Topic                                                               |
 | ----------- | ------------------------------------------------------------------- |
-| 9.00h | Troubleshooting session |
-| 10.00h | Welcome and coffee |
-| 10.15h      | [Introduction](link or PDF) |
-| 10.30h      | [Image visualization](link or PDF)                           |
-| 11.00h      | Hands-on training: image visualization                           |
-| 11.30h      | Lunch                        |
-| 12.30h      | [Image processing](link or PDF) |
-| 13.00h      | Hands-on training: image processing         |
-| 14.30h      | Coffee break   |
-| 15.00h      | [Reading data into R and visualization](link or PDF) |
-| 15.30h      | Hands-on training: reading data into R and visualization    |
+| 9.00h       | Troubleshooting session                                             |
+| 10.00h      | Welcome and coffee                                                  |
+| 10.15h      | [Introduction](link or PDF)                                         |
+| 10.30h      | [Image processing](link or PDF)                                     |
+| 11.00h      | Hands-on training: image processing                                 |
+| 12.30h      | Lunch                                                               |
+| 13.30h      | [Image visualization](link or PDF)                                  |
+| 13.00h      | Hands-on training: image visualization                              |
+| 14.30h      | [High-resolution Demo](link or PDF)                                 |
+| 15.00h      | Coffee break                                                        |
+| 15.30h      | [Reading data into R and visualization](link or PDF)                |
+| 16.00h      | Hands-on training: reading data into R and visualization            |
+| 18.00h      | Dinner                                                              |
 
-**10.04.2026**
+**Friday, 10.04.2026**
 
 | Time (CET)  | Topic                                                               | 
 | ----------- | ------------------------------------------------------------------- |
-| 09.00h      | [Single-cell analysis](https://docs.google.com/presentation/d/1UnOzH7UWbO6hLywwIs5MoaCE75HxDglU9JBIAY4_a60/edit?usp=sharing)                                                             |
-| 09.30h      | Coffee break          |
-| 10.00h      | Hands-on training: single-cell analysis                                                       |
-| 11.30h      | [Spatial data analysis](https://docs.google.com/presentation/d/1yqW_nMeW5ceQYBDCRTSssPRjaIhz7ghasD0yPd3w9pI/edit?usp=sharing)                         |
-| 12.00h      | Lunch                                                    |
-| 13.00h      | Hands-on training: spatial analysis                                                     |
-| 14.30h      | Coffee break                                                     |
-| 15.00h      | "Bring your own data"                                                     |
+| 09.00h      | [Single-cell analysis](link or PDF)                                 |
+| 09.30h      | Coffee break                                                        |
+| 10.00h      | Hands-on training: single-cell analysis                             |
+| 11.30h      | [Spatial data analysis](link or PDF)                                |
+| 12.00h      | Lunch                                                               |
+| 13.00h      | Hands-on training: spatial analysis                                 |
+| 14.30h      | Coffee break                                                        |
+| 15.00h      | "Bring your own data"                                               |
 
 ## Further resources
 
