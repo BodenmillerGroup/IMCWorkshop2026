@@ -3,6 +3,9 @@ steinbock-new/
 compensation/
 gated_cells/
 CellValidation/
+IMC_denoise_model_weights/
+standard/
+pixel_skip/
 images.rds
 masks.rds
 spe.rds

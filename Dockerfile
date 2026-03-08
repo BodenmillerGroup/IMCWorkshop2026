@@ -41,26 +41,50 @@ RUN arch="$(uname -m)"; \
     | tar -xvj bin/micromamba \
     && mv bin/micromamba /usr/local/bin/micromamba
 
-# ---- Python env: IMC tools ----
+############################################
+# Steinbock / DeepCell environment
+############################################
+
 RUN --mount=type=cache,target=/opt/micromamba/pkgs \
-    micromamba create -y -n imc -c conda-forge \
+    micromamba create -y -n steinbock -c conda-forge \
     python=3.11 pip \
     numpy scipy pandas scikit-image scikit-learn \
     tifffile imagecodecs \
     libstdcxx-ng libgcc-ng \
     && micromamba clean -a -y
 
-# ---- NEW: napari install needed for CLI in steinbock
-RUN micromamba install -n imc -c conda-forge -y napari pyqt
+RUN micromamba install -n steinbock -c conda-forge -y napari pyqt
 
-RUN micromamba run -n imc pip install --no-cache-dir \
-    "steinbock[imc,cellpose]" \
+RUN micromamba run -n steinbock pip install --no-cache-dir \
+    "steinbock[imc]" \
+    "cellpose==2.2" \
+    "jupyterlab" \
+    "ipykernel"
+
+############################################
+# Segmentation environment
+############################################
+
+RUN --mount=type=cache,target=/opt/micromamba/pkgs \
+    micromamba create -y -n segmentation -c conda-forge \
+    python=3.11 pip \
+    numpy scipy pandas scikit-image scikit-learn \
+    tifffile imagecodecs \
+    libstdcxx-ng libgcc-ng \
+    && micromamba clean -a -y
+
+RUN micromamba install -n segmentation -c conda-forge -y napari pyqt
+
+RUN micromamba run -n segmentation pip install --no-cache-dir \
     "cellpose" \
     "instanseg-torch" \
     "jupyterlab" \
     "ipykernel"
 
-# ---- Python env: IMC_Denoise ----
+############################################
+# IMC Denoise environment
+############################################
+
 RUN --mount=type=cache,target=/opt/micromamba/pkgs \
     micromamba create -y -n denoise -c conda-forge \
     python=3.11 pip \
@@ -72,7 +96,11 @@ RUN micromamba run -n denoise pip install --no-cache-dir \
     "git+https://github.com/PENGLU-WashU/IMC_Denoise.git" \
     "ipykernel"
 
-ENV LD_LIBRARY_PATH=/opt/micromamba/envs/imc/lib:/opt/micromamba/envs/denoise/lib:${LD_LIBRARY_PATH}
+############################################
+# Shared library path
+############################################
+
+ENV LD_LIBRARY_PATH=/opt/micromamba/envs/steinbock/lib:/opt/micromamba/envs/segmentation/lib:/opt/micromamba/envs/denoise/lib:${LD_LIBRARY_PATH}
 
 RUN R -q -e 'options(repos=c(CRAN="https://cloud.r-project.org")); \
     if (!requireNamespace("BiocManager", quietly=TRUE)) install.packages("BiocManager"); \
@@ -87,27 +115,39 @@ COPY install_r_packages.R /tmp/install_r_packages.R
 RUN Rscript /tmp/install_r_packages.R
 
 # ---- Convenience wrappers ----
-RUN printf '#!/usr/bin/env bash\nexec micromamba run -n imc python "$@"\n' > /usr/local/bin/python-imc \
+RUN printf '#!/usr/bin/env bash\nexec micromamba run -n steinbock python "$@"\n' > /usr/local/bin/python-steinbock \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n segmentation python "$@"\n' > /usr/local/bin/python-segmentation \
     && printf '#!/usr/bin/env bash\nexec micromamba run -n denoise python "$@"\n' > /usr/local/bin/python-denoise \
-    && printf '#!/usr/bin/env bash\nexec micromamba run -n imc cellpose "$@"\n' > /usr/local/bin/cellpose \
-    && printf '#!/usr/bin/env bash\nexec micromamba run -n imc steinbock "$@"\n' > /usr/local/bin/steinbock_py \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n segmentation cellpose "$@"\n' > /usr/local/bin/cellpose \
+    && printf '#!/usr/bin/env bash\nexec micromamba run -n steinbock steinbock "$@"\n' > /usr/local/bin/steinbock_py \
     && printf '#!/usr/bin/env bash\nexec micromamba run -n denoise python -c "import IMC_Denoise; print(\"IMC_Denoise OK\")"\n' > /usr/local/bin/imc_denoise_py \
-    && chmod +x /usr/local/bin/python-imc /usr/local/bin/python-denoise /usr/local/bin/cellpose /usr/local/bin/steinbock_py /usr/local/bin/imc_denoise_py
+    && chmod +x \
+    /usr/local/bin/python-steinbock \
+    /usr/local/bin/python-segmentation \
+    /usr/local/bin/python-denoise \
+    /usr/local/bin/cellpose \
+    /usr/local/bin/steinbock_py \
+    /usr/local/bin/imc_denoise_py
 
 # ---- Smoke tests ----
-RUN micromamba run -n imc python -c "import steinbock, cellpose, instanseg; print('imc OK')" \
+RUN micromamba run -n steinbock python -c "import steinbock; print('steinbock OK')" \
+    && micromamba run -n segmentation python -c "import cellpose; print('cellpose OK')" \
     && micromamba run -n denoise python -c "import tensorflow as tf; print('TF OK', tf.__version__)" \
     && micromamba run -n denoise python -c "import IMC_Denoise; print('IMC_Denoise OK')" \
-    && R -q -e "library(CATALYST); library(scater); library(imcRtools); library(cytomapper); library(Rphenograph); cat('R OK\\n')"
+    && R -q -e "library(CATALYST); library(scater); library(imcRtools); library(cytomapper); library(Rphenograph); cat('R OK\n')"
 
 # ---- Jupyter kernels ----
-RUN micromamba run -n imc python -m ipykernel install \
-    --name imc \
-    --display-name "Python (IMC tools)"
+RUN micromamba run -n steinbock python -m ipykernel install \
+    --name steinbock \
+    --display-name "Python (Steinbock / Cellpose)"
+
+RUN micromamba run -n segmentation python -m ipykernel install \
+    --name segmentation \
+    --display-name "Python (Cellpose / InstanSeg)"
 
 RUN micromamba run -n denoise python -m ipykernel install \
     --name denoise \
-    --display-name "Python (IMC denoise)"
+    --display-name "Python (IMC Denoise)"
 
 EXPOSE 8787
 EXPOSE 8888

@@ -84,11 +84,13 @@ docker run -p 8787:8787 -p 8888:8888 imc-workshop-2026
 #### Advanced Usage
 ```bash
 # Run with volume mounting for data persistence
-docker run \
+docker run -it \
   -p 8787:8787 \
   -p 8888:8888 \
-  -v /path/to/your/data:/home/rstudio/work/data \
-  imc-workshop-2026
+  -v "$(pwd)":/home/rstudio/work \
+  -w /home/rstudio/work \
+  --name imc-workshop \
+  imc-workshop26:test
 
 # Run in detached mode
 docker run -d \

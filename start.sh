@@ -5,9 +5,7 @@ mkdir -p /home/rstudio/work
 
 /usr/lib/rstudio-server/bin/rserver --server-daemonize=1
 
-cd /home/rstudio/work
-
-exec micromamba run -n imc jupyter lab \
+exec micromamba run -n steinbock jupyter lab \
   --ip=0.0.0.0 \
   --port=8888 \
   --no-browser \

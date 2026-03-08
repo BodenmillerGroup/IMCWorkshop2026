@@ -1,6 +1,6 @@
 # Image processing
 
-This document contains the instructions used in *Section 2: Image processing*.
+This document contains the instructions used in *Section 1: Image processing*.
 
 Please make sure you have cloned/downloaded an up-to-date version of this repository, completed the [setup instructions](../Setup/README.md) and [downloaded the data](../data/README.md).
 
