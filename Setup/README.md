@@ -58,7 +58,7 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
 - Password: ```rstudio```
 
 
-## Special case: Session 2
+## Mamba
 
 In session 2, we introduce several alternatives for viewing multi-channel images. Among these alternatives, we present the [napari](https://napari.org) image viewer for Python and the [napari-imc](https://github.com/BodenmillerGroup/napari-imc) plugin. In the workshop, we use [mamba](https://mamba.readthedocs.io/en/latest/index.html) environments for installing both napari and napari-imc as follows:
 
