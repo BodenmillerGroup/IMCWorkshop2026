@@ -1,6 +1,13 @@
 # Software setup
 
-**Note:** Please join the troubleshooting session on the beginning of the first day if you experience issues installing any of the following software.
+### Requirements
+
+For this workshop the following technical prerequisites are required:
+1. At least 20+ GB free disk space on your device
+2. 8 GB RAM minimum, 16 GB recommended
+3. Apple Silicon, Intel/AMD Windows or modern Linux OS
+
+**Note:** If you can't provide some of these requirements, please reach out to victor.ibanez@uzh.ch prior to the workshop to find another solution or join the troubleshooting session on the beginning of the first day.**
 
 
 For most of the sessions we use the a Docker container with all the necessary packages and Rstudio- as well as Jupyter server. For this, please install [Docker Desktop](https://docs.docker.com/get-docker/) (Mac OS, Windows) or [Docker Server/Engine](https://docs.docker.com/engine/install/#server) (Linux). Depending on your operating system, additional configuration steps may be necessary as outlined below.
@@ -9,9 +16,8 @@ After installing and configuring Docker Desktop or Docker Server/Engine (see bel
 
 1. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
 
-2. Execute ``docker run ghcr.io/bodenmillergroup/IMCWorkshop26:latest``.
+2. Execute ``docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest``. This will take quite a while (up to an hour), depending on your download speed and compute system.
 
-3. Verify that the final output reads ``IMCWorkshop26, version latest``.
 
 
 ### Configuring Docker Desktop for Mac
@@ -45,10 +51,14 @@ After that, run the container:
   -v "$(pwd)":/home/rstudio/work \
   -w /home/rstudio/work \
   --name imc-workshop \
-  imc-workshop26:test
+  ghcr.io/bodenmillergroup/imc-workshop26:latest
   ```
 
-This will expose Rstudio to localhost:8787 and Jupyter to localhost:8888 (they will open in your browser with the same root path (IMCworkshop26).
+To open either Jupyter or Rstudio, just type in ```localhost:8888``` or  ```localhost:8787``` respectively in any browser of your choice and it will open up there automatically.
+**Note:** For Rstudio server you will be prompted a username and password, which are:
+- Username: ```rstudio```
+- Password: ```rstudio```
+
 
 ## Special case: Session 2
 
@@ -69,3 +79,6 @@ In session 2, we introduce several alternatives for viewing multi-channel images
 7. Execute ``napari`` and verify that napari opens.
 
 Other tools for interactive image visualization introduced during the workshop include the ([MCDViewer](https://www.standardbio.com/products-services/software)) specifically for imaging mass cytometry as well as [QuPath](https://qupath.github.io/) and [ImageJ/FIJI](https://imagej.net/software/fiji/)) for more general multiplexed image visualization.
+
+
+**Note:** Please join the troubleshooting session on the beginning of the first day if you experience issues installing any of the software.

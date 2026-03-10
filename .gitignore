@@ -53,3 +53,4 @@ rsconnect/
 *.ipynb
 *.ipynb_checkpoints
 __pycache__/
+docker_installation/
