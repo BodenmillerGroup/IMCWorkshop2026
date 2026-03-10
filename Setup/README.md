@@ -35,7 +35,7 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
 
 1. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
 
-2. pull the docker container (you will need internet access)
+2. pull the docker container (*Note:* you will need internet access and it will take up to an hour to download the container?)
 ```bash
    docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest
    ```
