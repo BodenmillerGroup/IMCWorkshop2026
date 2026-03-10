@@ -54,3 +54,4 @@ rsconnect/
 *.ipynb_checkpoints
 __pycache__/
 docker_installation/
+.Trash-0/
