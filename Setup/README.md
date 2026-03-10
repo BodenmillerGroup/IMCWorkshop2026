@@ -10,15 +10,8 @@ For this workshop the following technical prerequisites are required:
 **Note:** If you can't provide some of these requirements, please reach out to victor.ibanez@uzh.ch prior to the workshop to find another solution or join the troubleshooting session on the beginning of the first day.**
 
 
+## Docker
 For most of the sessions we use the a Docker container with all the necessary packages and Rstudio- as well as Jupyter server. For this, please install [Docker Desktop](https://docs.docker.com/get-docker/) (Mac OS, Windows) or [Docker Server/Engine](https://docs.docker.com/engine/install/#server) (Linux). Depending on your operating system, additional configuration steps may be necessary as outlined below.
-
-After installing and configuring Docker Desktop or Docker Server/Engine (see below), ensure that you can successfully run the Docker container:
-
-1. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
-
-2. Execute ``docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest``. This will take quite a while (up to an hour), depending on your download speed and compute system.
-
-
 
 ### Configuring Docker Desktop for Mac
 
@@ -36,13 +29,18 @@ If Docker Desktop is running in *Hyper-V mode* (i.e., with the "Use the WSL 2 ba
 
 To be able to run ``docker`` as non-root user, follow the [Docker Engine post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).
 
-Once you installed Docker Desktop and it is open and running, go to a terminal or shell and pull the container:
 
+### Running the docker container
+Once you installed Docker Desktop and it is open and running, go to a terminal or shell and pull and run the container:
+
+1. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
+
+2. pull the docker container (you will need internet access)
 ```bash
    docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest
    ```
 
-After that, run the container: 
+3. After that, run the container: 
 
 ```bash
    docker run -it \
@@ -54,7 +52,7 @@ After that, run the container:
   ghcr.io/bodenmillergroup/imc-workshop26:latest
   ```
 
-To open either Jupyter or Rstudio, just type in ```localhost:8888``` or  ```localhost:8787``` respectively in any browser of your choice and it will open up there automatically.
+4. To open either Jupyter or Rstudio, just type in ```localhost:8888``` or  ```localhost:8787``` respectively in any browser of your choice and it will open up there automatically with a fixed working directory (ImagingWorkshop2026).
 **Note:** For Rstudio server you will be prompted a username and password, which are:
 - Username: ```rstudio```
 - Password: ```rstudio```
