@@ -40,7 +40,13 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
    docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest
    ```
 
-3. After that, run the container: 
+3. navigate into the workshop folder with:
+```bash
+   cd your_path_to_imcworkshop_folder/ImagingWorkshop2026
+   ```
+change ```your_path_to_imcworkshop_folder``` to your actual path.
+
+4. After that, run the container: 
 
 ```bash
    docker run -it \
