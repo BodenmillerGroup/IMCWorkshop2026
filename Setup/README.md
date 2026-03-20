@@ -58,7 +58,7 @@ change ```your_path_to_imcworkshop_folder``` to your actual path.
   ghcr.io/bodenmillergroup/imc-workshop26:latest
   ```
 
-4. To open either Jupyter or Rstudio, just type in ```localhost:8888``` or  ```localhost:8787``` respectively in any browser of your choice and it will open up there automatically with a fixed working directory (ImagingWorkshop2026).
+5. To open either Jupyter or Rstudio, just type in ```localhost:8888``` or  ```localhost:8787``` respectively in any browser of your choice and it will open up there automatically with a fixed working directory (ImagingWorkshop2026).
 **Note:** For Rstudio server you will be prompted a username and password, which are:
 - Username: ```rstudio```
 - Password: ```rstudio```
