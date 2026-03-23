@@ -27,7 +27,7 @@ If Docker Desktop is running in *Hyper-V mode* (i.e., with the "Use the WSL 2 ba
 
 Note: possibly Docker Desktop will require Server Service to be enabled. If required open a powershell terminal as administrator and run the following two commands:
 ```bash
-   docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest
+   Set-Service -Name LanmanServer -StartupType Automatic 
    Start-Service LanmanServer 
    ```
 
