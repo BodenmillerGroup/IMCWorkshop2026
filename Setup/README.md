@@ -25,6 +25,12 @@ Docker Desktop can run in either *Hyper-V mode* or in *WSL 2 mode*. To check/cho
 
 If Docker Desktop is running in *Hyper-V mode* (i.e., with the "Use the WSL 2 based engine" checkbox grayed out or NOT ticked), increase the memory that Docker Desktop is allowed to use as described [here](https://docs.docker.com/desktop/settings/windows/#advanced) (Docker Preferences --> Resources --> Advanced --> Memory). To avoid problems during the workshop, we recommend to set this to roughly 80% of the maximum available system memory.
 
+Note: possibly Docker Desktop will require Server Service to be enabled. If required open a powershell terminal as administrator and run the following two commands:
+```bash
+   docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest
+   Start-Service LanmanServer 
+   ```
+
 ### Configuring Docker Server/Engine for Linux
 
 To be able to run ``docker`` as non-root user, follow the [Docker Engine post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).
