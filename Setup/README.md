@@ -75,10 +75,16 @@ change ```your_path_to_imcworkshop_folder``` to your actual path.
 In session 2, we introduce several alternatives for viewing multi-channel images. Among these alternatives, we present the [napari](https://napari.org) image viewer for Python and the [napari-imc](https://github.com/BodenmillerGroup/napari-imc) plugin. In the workshop, we use [mamba](https://mamba.readthedocs.io/en/latest/index.html) environments for installing both napari and napari-imc as follows:
 
 1. [Install Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html).
+   Note: on Windows for administration managed computers it is possible that scripts via powershell are disabled or that your powershell profile home is under OneDrive which may restrict usage. After following the installation instructions of micromamba for Windows (IMPORTANTLY, set the $PROFILE variable reasonable: e.g. "C:/Users/YOUR_USER_NAME/micromamba"), run the following commands if you get an error that points in this direction try the following:
+```bash
+   Set-ExecutionPolicy -Scope CurrentUser
+   remotesigned 
+```
 
-2. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
 
-3. Execute the following commands:  
+3. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
+
+4. Execute the following commands:  
    ```
    micromamba create -n napari -c conda-forge python=3.11 napari pyqt jupyterlab ipykernel napari-imc tifffile pandas
    micromamba activate napari
