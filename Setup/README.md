@@ -63,12 +63,12 @@ change ```your_path_to_imcworkshop_folder``` to your actual path where to where 
   --name imc-workshop \
   ghcr.io/bodenmillergroup/imc-workshop26:latest
   ```
-Note: for Windows this command may not work in powershell (it does work in windows subsystem for linux). To start the container you can also open docker desktop and go to the `Images` tab (you should see the image that we pulled under step 2 above). Hit the `run` botton to start the container from the image. you will be prompted for some optional settings. select the following:
-name (optional): e.g. imc-workshop2026
-Host port 1: 8787
-Host port 2: 8888
-Volumes host path: your_path_to_imcworkshop_folder
-Container path: /home/rstudio/work/
+Note: for Windows this command may not work in powershell (it does work in windows subsystem for linux). To start the container you can also open docker desktop and go to the `Images` tab (you should see the image that we pulled under step 2 above). Hit the `run` botton to start the container from the image. you will be prompted for some optional settings. select the following:  
+name (optional): e.g. imc-workshop2026  
+Host port 1: 8787  
+Host port 2: 8888  
+Volumes host path: your_path_to_imcworkshop_folder  
+Container path: /home/rstudio/work/  
 Hit run. The running container should now also appear under `Containers`. You can now stop and restart this specific container from the `Containers` tab.
 
 5. To open either Jupyter or Rstudio, just type in ```localhost:8888``` or  ```localhost:8787``` respectively in any browser of your choice and it will open up there automatically with a fixed working directory (ImagingWorkshop2026).
