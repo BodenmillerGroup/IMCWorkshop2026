@@ -9,7 +9,7 @@ The second day will focus on analysis approaches presented in our online book fo
 
 ## Accessing the code
 
-To access the code you can clone the current repository via
+To access the code you can clone the current repository (https://github.com/BodenmillerGroup/IMCWorkshop2026) via
 
 ```
 git clone https://github.com/BodenmillerGroup/ImagingWorkshop2026.git
