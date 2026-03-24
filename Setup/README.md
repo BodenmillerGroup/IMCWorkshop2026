@@ -10,6 +10,16 @@ For this workshop the following technical prerequisites are required:
 **Note:** If you can't provide some of these requirements, please reach out to victor.ibanez@uzh.ch prior to the workshop to find another solution or join the troubleshooting session on the beginning of the first day.**
 
 
+## Accessing the code
+
+To access the code you can clone the current repository via
+
+```
+git clone https://github.com/BodenmillerGroup/ImagingWorkshop2026.git
+```
+
+or you can click the `Code` > `Download ZIP` button.
+
 ## Docker
 
 For most of the sessions we use a Docker container with all the necessary packages and Rstudio- as well as Jupyter server. For this, please install [Docker Desktop](https://docs.docker.com/get-docker/) (Mac OS, Windows) or [Docker Server/Engine](https://docs.docker.com/engine/install/#server) (Linux). Depending on your operating system, additional configuration steps may be necessary as outlined below.

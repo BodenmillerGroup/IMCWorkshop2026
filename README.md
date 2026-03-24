@@ -7,16 +7,6 @@ The final session of the first day will include an introduction to the [cytomapp
 
 The second day will focus on analysis approaches presented in our online book for multiplexed image analysis ([https://bodenmillergroup.github.io/IMCDataAnalysis/](https://bodenmillergroup.github.io/IMCDataAnalysis/)). In the first session of the day we will present general single-cell analysis approaches including dimensionality reduction, visualization, clustering and cell type classification as well as channel-to-channel spillover correction and image visualization. The second session will demonstrate common spatial analysis approaches including spatial community detection, cellular neighborhood and spatial context analysis and cell type/cell type interaction testing. Finally, in the last session you can bring your own data and discuss open challenges with experts of the lab.
 
-## Accessing the code
-
-To access the code you can clone the current repository via
-
-```
-git clone https://github.com/BodenmillerGroup/ImagingWorkshop2026.git
-```
-
-or you can click the `Code` > `Download ZIP` button.
-
 ## Installation & data download instructions
 
 Please follow the instructions in the [Setup](Setup) folder on how to install the needed software.
