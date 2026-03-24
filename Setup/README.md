@@ -10,9 +10,9 @@ For this workshop the following technical prerequisites are required:
 **Note:** If you can't provide some of these requirements, please reach out to victor.ibanez@uzh.ch prior to the workshop to find another solution or join the troubleshooting session on the beginning of the first day.**
 
 
-## Accessing the code
+## Downloading the code
 
-To access the code you can clone the current repository via
+To download the code you can clone the current repository via
 
 ```
 git clone https://github.com/BodenmillerGroup/ImagingWorkshop2026.git
