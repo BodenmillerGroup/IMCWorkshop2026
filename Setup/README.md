@@ -98,9 +98,17 @@ In session 2, we introduce several alternatives for viewing multi-channel images
    micromamba activate napari
    ```
    
-6. Execute ``jupyter lab`` and verify that jupyter-lab opens.
+6. Execute 
+   ```
+   jupyter lab
+   ```
+   and verify that jupyter-lab opens.
 
-7. Execute ``napari`` and verify that napari opens.
+7. Execute 
+   ```
+   napari
+   ``` 
+   and verify that napari opens.
 
 Other tools for interactive image visualization introduced during the workshop include the ([MCDViewer](https://www.standardbio.com/products-services/software)) specifically for imaging mass cytometry as well as [QuPath](https://qupath.github.io/) and [ImageJ/FIJI](https://imagej.net/software/fiji/)) for more general multiplexed image visualization.
 
