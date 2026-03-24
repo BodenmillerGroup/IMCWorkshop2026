@@ -112,9 +112,9 @@ Other tools for interactive image visualization introduced during the workshop i
 
 2. navigate into the workshop folder with:
 ```bash
-   cd your_path_to_imcworkshop_folder/ImagingWorkshop2026
+   cd your_path_to_imcworkshop26_folder/ImagingWorkshop2026
    ```
-change ```your_path_to_imcworkshop_folder``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
+change ```your_path_to_imcworkshop26_folder``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
 
 3. pull the IMC workshop data from Zenodo (https://zenodo.org/records/19184908):
 ```bash
