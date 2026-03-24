@@ -3,7 +3,7 @@
 ### Requirements
 
 For this workshop the following technical prerequisites are required:
-1. At least 20+ GB free disk space on your device
+1. At least 50+ GB free disk space on your device
 2. 8 GB RAM minimum, 16 GB recommended
 3. Apple Silicon, Intel/AMD Windows or modern Linux OS
 
@@ -41,7 +41,7 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
 
 1. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
 
-2. pull the docker container (*Note:* you will need internet access and it will take up to an hour to download the container?)
+2. pull the docker container (*Note:* you will need internet access and it can take quite some time to download the container (depending on your internet connection))
 ```bash
    docker pull ghcr.io/bodenmillergroup/imc-workshop26:latest
    ```
@@ -103,5 +103,21 @@ In session 2, we introduce several alternatives for viewing multi-channel images
 
 Other tools for interactive image visualization introduced during the workshop include the ([MCDViewer](https://www.standardbio.com/products-services/software)) specifically for imaging mass cytometry as well as [QuPath](https://qupath.github.io/) and [ImageJ/FIJI](https://imagej.net/software/fiji/)) for more general multiplexed image visualization.
 
+
+
+## Data download
+
+1. Open a [Command Prompt (Windows)](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) or Terminal ([Mac OS](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac#:~:text=Terminal%20for%20me-,Open%20Terminal,%2C%20then%20double%2Dclick%20Terminal.), Linux).
+
+2. navigate into the workshop folder with:
+```bash
+   cd your_path_to_imcworkshop_folder/ImagingWorkshop2026
+   ```
+change ```your_path_to_imcworkshop_folder``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
+
+3. pull the IMC workshop data from Zenodo (https://zenodo.org/records/19184908):
+```bash
+   wget https://zenodo.org/records/19184908
+   ```
 
 **Note:** Please join the troubleshooting session on the beginning of the first day if you experience issues installing any of the software.
