@@ -124,7 +124,7 @@ Other tools for interactive image visualization introduced during the workshop i
    ```
 change ```YOUR_PATH_TO``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
 
-3. pull the IMC workshop data from Zenodo (https://zenodo.org/records/19184908):
+3. pull the IMC workshop data from Zenodo (https://zenodo.org/records/19184908) with:
 ```bash
    wget https://zenodo.org/records/19184908
    ```
