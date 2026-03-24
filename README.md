@@ -3,11 +3,13 @@
 In this workshop we will demonstrate the main steps to perform computational analysis of our highly multiplexed imaging mass cytometry data (IMC). 
 
 **Day 1**
+
 We will start off with a troubleshooting session to address possible issues when installing the required software. 
 In our first session we will go through all the various image resolutions that can be obtained using IMC and the most important processing steps to extract single cell (or pixel-level) features. This involves software such as the steinbock framework ([https://github.com/BodenmillerGroup/steinbock](https://github.com/BodenmillerGroup/steinbock)), ([IMC denoise](https://github.com/PENGLU-WashU/IMC_Denoise)) as well as InstanSeg ([InstanSeg](https://github.com/instanseg/instanseg)) and ([Cellpose](https://github.com/MouseLand/cellpose)). In the next main session we will highlight a number of interactive visualization approaches for imaging mass cytometry ([MCDViewer](https://www.standardbio.com/products-services/software)) and other highly multiplexed imaging data ([napari](https://napari.org/stable/), [QuPath](https://qupath.github.io/), [ImageJ/FIJI](https://imagej.net/software/fiji/)). 
 The final session of the first day will include an introduction to the [cytomapper](https://www.bioconductor.org/packages/release/bioc/html/cytomapper.html) and [imcRtools](https://bioconductor.org/packages/release/bioc/html/imcRtools.html) R/Bioconductor packages for reading spatially resolved, single-cell and multiplexed imaging data into R for analysis.
 
 **Day 2**
+
 Here we will focus on analysis approaches presented in our online book for multiplexed image analysis ([https://bodenmillergroup.github.io/IMCDataAnalysis/](https://bodenmillergroup.github.io/IMCDataAnalysis/)). In the first session of the day we will present general single-cell analysis approaches including dimensionality reduction, visualization, clustering and cell type classification as well as channel-to-channel spillover correction and image visualization. The second session will demonstrate common spatial analysis approaches including spatial community detection, cellular neighborhood and spatial context analysis and cell type/cell type interaction testing. Finally, in the last session you can bring your own data and discuss open challenges with experts of the lab.
 
 ## Installation & data download instructions
