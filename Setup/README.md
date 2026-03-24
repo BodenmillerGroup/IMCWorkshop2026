@@ -49,7 +49,7 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
 
 3. navigate into the workshop folder with:
 ```bash
-   cd YOUR_PATH_TO/ImagingWorkshop2026
+   cd YOUR_PATH_TO/IMCWorkshop2026
    ```
 change ```YOUR_PATH_TO``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
 
@@ -120,7 +120,7 @@ Other tools for interactive image visualization introduced during the workshop i
 
 2. navigate into the workshop folder with:
 ```bash
-   cd YOUR_PATH_TO/ImagingWorkshop2026
+   cd YOUR_PATH_TO/IMCWorkshop2026
    ```
 change ```YOUR_PATH_TO``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
 
