@@ -9,7 +9,7 @@ The second day will focus on analysis approaches presented in our online book fo
 
 ## Installation & data download instructions
 
-Please follow the instructions in the [Setup](Setup) folder on how to install the needed software.
+Please follow the instructions in the [Setup](Setup) folder on how to download this code base, the workshop data and how to install necessary software.
 
 
 ## Presentations and schedule
