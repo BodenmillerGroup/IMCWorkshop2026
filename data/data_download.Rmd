@@ -98,7 +98,7 @@ unlink("data/compensation.zip")
 
 ### Gated cells
 
-In Session 4, we present a cell type classification approach
+In Session 4, we present a cell type classification approach [further reading](https://www.cell.com/cell-reports-methods/fulltext/S2667-2375(25)00206-1)
 that relies on previously gated cells. This ground truth data is available
 online at [zenodo.org/record/7432486](https://zenodo.org/record/7432486) and
 will be downloaded here for later use:

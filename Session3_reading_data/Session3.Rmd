@@ -10,6 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 The first session will focus on reading in the data after `steinbock` 
@@ -36,7 +37,7 @@ metadata (e.g. cell type), (iii) feature metadata (e.g. marker name) and (iv)
 experiment-wide metadata. For an in-depth introduction to the `SingleCellExperiment`
 container, please refer to the [SingleCellExperiment class](https://bioconductor.org/books/3.14/OSCA.intro/the-singlecellexperiment-class.html).
 
-The [SpatialExperiment](https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html)
+The [SpatialExperiment](https://bioconductor.org/packages/release/bioc/html/SpatialExperiment.html)
 class is an extension of the `SingleCellExperiment` class. It
 was developed to store spatial data in addition to single-cell data and an
 extended introduction is accessible
@@ -56,7 +57,7 @@ in with the `read_steinbock` function provided by `imcRtools`. For more
 information, please refer to `?read_steinbock`.
 
 ```{r read-steinbock}
-spe <- read_steinbock("data/steinbock/")
+spe <- read_steinbock("data/steinbock/", panel_file = "panel_backup.csv")
 spe
 ```
 
