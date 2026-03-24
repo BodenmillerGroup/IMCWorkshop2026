@@ -49,9 +49,9 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
 
 3. navigate into the workshop folder with:
 ```bash
-   cd your_path_to_imcworkshop_folder/ImagingWorkshop2026
+   cd YOUR_PATH_TO/ImagingWorkshop2026
    ```
-change ```your_path_to_imcworkshop_folder``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
+change ```YOUR_PATH_TO``` to your actual path where to where you cloned the github repo or extracted the downloaded github zipped repo.
 
 4. After that, run the container:
 
