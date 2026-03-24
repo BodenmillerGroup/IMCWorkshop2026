@@ -22,7 +22,7 @@ or you can click the `Code` > `Download ZIP` button.
 
 ## Docker
 
-For most of the sessions we use a Docker container with all the necessary packages and Rstudio- as well as Jupyter server. For this, please install [Docker Desktop](https://docs.docker.com/get-docker/) (Mac OS, Windows) or [Docker Server/Engine](https://docs.docker.com/engine/install/#server) (Linux). Depending on your operating system, additional configuration steps may be necessary as outlined below.
+For most of the sessions we use a Docker container with all the necessary packages including Rstudio- as well as Jupyter server. For this, please install [Docker Desktop](https://docs.docker.com/get-docker/) (Mac OS, Windows) or [Docker Server/Engine](https://docs.docker.com/engine/install/#server) (Linux). Depending on your operating system, additional configuration steps may be necessary as outlined below.
 
 ### Configuring Docker Desktop for Mac
 
