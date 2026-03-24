@@ -1,6 +1,6 @@
-# Multiplexed Tissue Imaging Workshop 2026
+# IMC Workshop 2026
 
-In this workshop we will demonstrate the main steps to perform computational analysis of highly multiplexed imaging data. 
+In this workshop we will demonstrate the main steps to perform computational analysis of our highly multiplexed imaging mass cytometry data (IMC). 
 The first day will start off with a troubleshooting session to address possible issues when installing the required software. 
 In our first session we will go through all the various image resolutions that can be obtained using IMC and the most important processing steps to extract single cell (or pixel-level) features. This involves software such as the steinbock framework ([https://github.com/BodenmillerGroup/steinbock](https://github.com/BodenmillerGroup/steinbock)), ([IMC denoise](https://github.com/PENGLU-WashU/IMC_Denoise)) as well as InstanSeg ([InstanSeg](https://github.com/instanseg/instanseg)) and ([Cellpose](https://github.com/MouseLand/cellpose)). In the next main session we will highlight a number of interactive visualization approaches for imaging mass cytometry ([MCDViewer](https://www.standardbio.com/products-services/software)) and other highly multiplexed imaging data ([napari](https://napari.org/stable/), [QuPath](https://qupath.github.io/), [ImageJ/FIJI](https://imagej.net/software/fiji/)). 
 The final session of the first day will include an introduction to the [cytomapper](https://www.bioconductor.org/packages/release/bioc/html/cytomapper.html) and [imcRtools](https://bioconductor.org/packages/release/bioc/html/imcRtools.html) R/Bioconductor packages for reading spatially resolved, single-cell and multiplexed imaging data into R for analysis.
