@@ -17,17 +17,10 @@ git clone https://github.com/BodenmillerGroup/ImagingWorkshop2026.git
 
 or you can click the `Code` > `Download ZIP` button.
 
-## Installation instructions
+## Installation & data download instructions
 
 Please follow the instructions in the [Setup](Setup) folder on how to install the needed software.
 
-## Data download
-
-The `data_download.R` script in the [data](data) folder allows you to download all needed data.
-
-## Follow along
-
-Session 3-5 will be conducted in R. The R markdown scripts can be found in the individual folder. Please always ensure that you open the `ImagingWorkshop.Rproj` file before starting the session.
 
 ## Presentations and schedule
 
@@ -37,15 +30,15 @@ Session 3-5 will be conducted in R. The R markdown scripts can be found in the i
 | ----------- | ------------------------------------------------------------------- |
 | 9.00h       | Troubleshooting session                                             |
 | 10.00h      | Welcome and coffee                                                  |
-| 10.15h      | [Introduction](link to PDF)                                         |
-| 10.30h      | [Image processing](link or PDF)                                     |
+| 10.15h      | Introduction                                                        |
+| 10.30h      | Image processing                                                    |
 | 11.00h      | Hands-on training: image processing                                 |
 | 12.30h      | Lunch                                                               |
-| 13.30h      | [Image visualization](link or PDF)                                  |
+| 13.30h      | Image visualization                                                 |
 | 13.00h      | Hands-on training: image visualization                              |
-| 14.30h      | [High-resolution Demo](link or PDF)                                 |
+| 14.30h      | High-resolution Demo                                                |
 | 15.00h      | Coffee break                                                        |
-| 15.30h      | [Reading data into R and visualization](link or PDF)                |
+| 15.30h      | Reading data into R and visualization                               |
 | 16.00h      | Hands-on training: reading data into R and visualization            |
 | 18.00h      | Dinner                                                              |
 
@@ -53,10 +46,10 @@ Session 3-5 will be conducted in R. The R markdown scripts can be found in the i
 
 | Time (CET)  | Topic                                                               | 
 | ----------- | ------------------------------------------------------------------- |
-| 09.00h      | [Single-cell analysis](link or PDF)                                 |
+| 09.00h      | Single-cell analysis                                                |
 | 09.30h      | Coffee break                                                        |
 | 10.00h      | Hands-on training: single-cell analysis                             |
-| 11.30h      | [Spatial data analysis](link or PDF)                                |
+| 11.30h      | Spatial data analysis                                               |
 | 12.00h      | Lunch                                                               |
 | 13.00h      | Hands-on training: spatial analysis                                 |
 | 14.30h      | Coffee break                                                        |
