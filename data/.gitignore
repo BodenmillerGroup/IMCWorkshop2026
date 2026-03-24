@@ -4,8 +4,9 @@ compensation/
 gated_cells/
 CellValidation/
 IMC_denoise_model_weights/
-standard/
-pixel_skip/
+cell_mode/
+preview_mode/
+zenodo/
 images.rds
 masks.rds
 spe.rds

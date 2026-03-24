@@ -50,8 +50,8 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-*.ipynb
 *.ipynb_checkpoints
 __pycache__/
 docker_installation/
+data/
 .Trash-0/
