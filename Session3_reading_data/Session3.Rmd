@@ -1,6 +1,6 @@
 ---
 title: 'Session 3: Reading in data and visualization'
-author: "Nils Eling"
+author: "Nils Eling (Adopted from Daniel Schulz / Lasse Meyer)"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -57,7 +57,7 @@ in with the `read_steinbock` function provided by `imcRtools`. For more
 information, please refer to `?read_steinbock`.
 
 ```{r read-steinbock}
-spe <- read_steinbock("data/steinbock/", panel_file = "panel_backup.csv")
+spe <- read_steinbock("data/steinbock/")
 spe
 ```
 
@@ -631,7 +631,7 @@ dataset:
 
 ```{r select-images, message=FALSE}
 # Sample images
-set.seed(220517)
+set.seed(22)
 cur_id <- sample(unique(spe$sample_id), 3)
 cur_images <- images[names(images) %in% cur_id]
 cur_masks <- masks[names(masks) %in% cur_id]
@@ -828,8 +828,8 @@ sizes.
 
 # Interactive image visualization
 
-The [cytoviewer](https://bioconductor.org/packages/release/bioc/html/cytoviewer.html)
-R/Bioconductor package [@Meyer2024] extends the static visualization
+The [cytoviewer](https://link.springer.com/article/10.1186/s12859-023-05546-z)
+R/Bioconductor package extends the static visualization
 abilities from `cytomapper` via an interactive and user-friendly `shiny`
 application.
 
