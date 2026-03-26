@@ -37,13 +37,15 @@ spe <- readRDS("data/spe.rds")
 
 # Overview
 
-TO DO
+Spatial relationships take place at different biological length scales 
+and range from more "global" formation of cellular neighborhoods to "local" 
+cell-to-cell interactions. Methods can also be broadly divided into 
+unsupervised and supervised spatial methods. 
 
-Many spatial analysis approaches either compare the observed versus expected
-number of cells around a given cell type (point process) or utilize interaction
-graphs (spatial object graphs) to estimate clustering or interaction frequencies
+Many approaches either compare the observed versus expected number of cells 
+around a given cell type ("point process") or utilize interaction graphs 
+("spatial object graphs") to estimate clustering or interaction frequencies
 between cell types.
-
 
 ## Spatial graphs
 
@@ -54,7 +56,7 @@ masks by 4 pixels.
 
 The `imcRtools` package further allows the *ad hoc* consctruction of spatial
 graphs directly using a `SpatialExperiment` or `SingleCellExperiment` object
-while considering the spatial location (centroids) of individual cells. The
+while considering the spatial location (here centroids) of individual cells. The
 [buildSpatialGraph](https://bodenmillergroup.github.io/imcRtools/reference/buildSpatialGraph.html)
 function allows constructing spatial graphs by detecting the k-nearest neighbors
 in 2D (`knn`), by detecting all cells within a given distance to the center cell
@@ -162,17 +164,18 @@ plotSpatial(spe[,spe$sample_id == "Patient3_001"],
             assay_type = "exprs",
             img_id = "sample_id", 
             draw_edges = TRUE, 
-            colPairName = "expansion_interaction_graph", 
+            colPairName = "neighborhood", 
             nodes_first = FALSE, 
             node_size_by = "area", 
             directed = FALSE,
             edge_color_fix = "grey") + 
     scale_size_continuous(range = c(0.1, 2)) +
-    ggtitle("E-cadherin expression")
+    ggtitle("E-cadherin expression on steinbock graph")
 ```
 
 Finally, the `plotSpatial` function allows displaying all images at once. This
-visualization can be useful to quickly detect larger structures of interest.
+visualization can be useful to quickly detect larger structures of interest 
+(e.g. large cohesive tumor regions and B/BnT cell aggregation)
 
 ```{r spatial-viz-3, fig.height=12, fig.width=12}
 plotSpatial(spe, 
@@ -187,21 +190,21 @@ For a full documentation on the `plotSpatial` function, please refer to
 
 # Unsupervised spatial analysis
 
+In the following section, we will highlight more unsupervised ways for spatial 
+analysis. First, we will focus on "global" cellular neighborhood detection based on 
+the 1) celltype neighborhood, 2) expression neighborhood and 3) point-process
+based assessment. Second, we will analyze "local" cell-to-cell interactions using 
+permutation-based testing.
+
 ## Cellular neighborhood analysis
 
 The following section highlights the use of the `imcRtools` package to detect
-cellular neighborhoods. This approach has been proposed by [@Goltsev2018] and
-[@Schurch2020] to group cells based on information contained in their direct
-neighborhood. A deviation of this approach working directly on the expression of
-the neighboring cells instead of their phenotypes has been published by
-[@Kim2022].
+cellular neighborhoods. This approach has been first proposed by [Goltsev et al. (2018)](https://www.sciencedirect.com/science/article/pii/S0092867418309048?via%3Dihub)
+and [Schürch et al. (2020)](https://www.sciencedirect.com/science/article/pii/S0092867420308709?via%3Dihub) 
+to group cells based on information contained in their direct
+neighborhood. 
 
 ### Cell type-based neighborhood analysis
-
-[@Goltsev2018] perfomed Delaunay triangulation-based graph construction,
-neighborhood aggregation and then clustered cells. [@Schurch2020] on the
-other hand constructed a 10-nearest neighbor graph before aggregating
-information across neighboring cells.
 
 In the following code chunk we will use the 20-nearest neighbor graph as
 constructed above to define the direct cellular neighborhood. The
@@ -211,7 +214,7 @@ function allows neighborhood aggregation in 2 different ways:
 1.  For each cell the function computes the fraction of cells of a
     certain type (e.g., cell type) among its neighbors.
 2.  For each cell it aggregates (e.g., mean) the expression counts
-    across all neighboring cells.
+    across all neighboring cells (see next section). 
 
 Based on these measures, cells can now be clustered into cellular
 neighborhoods. We will first compute the fraction of the different cell
@@ -219,12 +222,10 @@ types among the 20-nearest neighbors and use kmeans clustering to group
 cells into 6 cellular neighborhoods.
 
 **Of note:** constructing a 20-nearest neighbor graph and clustering
-using kmeans with `k=6` is only an example. Similar to the analysis done
-in Section \@ref(snn-graph), it is recommended to perform a parameter
-sweep across different graph construction algorithms and different
+using kmeans with `k=6` is only an example. It is recommended to perform 
+a parameter sweep across different graph construction algorithms and different
 parmaters `k` for kmeans clustering. Finding the best CN detection
-settings is also subject to the question at hand. Constructing graphs
-with more neighbors usually results in larger CNs.
+settings is also subject to the question at hand.
 
 ```{r cn-analysis, fig.height=12, fig.width=12}
 # By celltypes
@@ -233,8 +234,11 @@ spe <- aggregateNeighbors(spe,
                           aggregate_by = "metadata", 
                           count_by = "celltype")
 
-set.seed(220705)
+# View output
+head(spe$aggregatedNeighbors)
 
+# Perform clustering and visualization
+set.seed(220705)
 cn_1 <- kmeans(spe$aggregatedNeighbors, centers = 6)
 spe$cn_celltypes <- as.factor(cn_1$cluster)
 
@@ -250,7 +254,7 @@ of the detected cellular neighborhoods (CN).
 
 First, we can visualize the relative cell type abundance per CN (column-scaled).
 
-```{r}
+```{r heatmap-1}
 library(pheatmap)
 
 for_plot <- prop.table(table(as.character(spe$cn_celltypes), spe$celltype), margin = 1)
@@ -263,7 +267,7 @@ pheatmap(for_plot,
 Second, we can observe per cell type the fraction of CN that they are distributed
 across.
 
-```{r}
+```{r heatmap-2}
 for_plot <- prop.table(table(as.character(spe$cn_celltypes), spe$celltype), margin = 2)
 
 pheatmap(for_plot, 
@@ -274,10 +278,9 @@ pheatmap(for_plot,
 ```
 
 Last, we also recommended to visualize some images to confirm the interpretation of
-cellular neighborhoods. For this we can use the `plotSpatial` function:
+cellular neighborhoods. For this we can again use the `plotSpatial` function:
 
-```{r, fig.height=8, fig.width=10}
-# plotSpatial for CN
+```{r spatial-cn,fig.height=8, fig.width=10}
 plotSpatial(spe[,spe$sample_id == "Patient1_003"],
             img_id = "cn_celltypes", 
             node_color_by = "celltype", 
@@ -286,17 +289,21 @@ plotSpatial(spe[,spe$sample_id == "Patient1_003"],
 ```
 
 CN 1 and CN 6 are mainly enriched for tumor cells with CN 6 forming the
-tumor/stroma border CN 3 is mainly enriched for B and BnT cells
-indicating TLS. CN 5 is composed of aggregated plasma cells and most T
-cells.
+tumor/stroma border. CN 3 is mainly enriched for B and BnT cells
+indicating TLS-like structures. CN 5 is composed of aggregated plasma cells 
+and most T cells.
 
 ### Expression-based 
 
-We will now detect cellular neighborhoods by computing the mean
+A deviation of this approach working directly on the expression of
+the neighboring cells instead of their phenotypes has been published by
+[Kim et al. (2022)](https://www.nature.com/articles/s41592-022-01657-2). 
+
+Here, we will now detect cellular neighborhoods by computing the mean
 expression across the 20-nearest neighbors prior to kmeans clustering
 (k=6).
 
-```{r, fig.height=12, fig.width=12}
+```{r cn-expression, fig.height=12, fig.width=12}
 # By expression
 spe <- aggregateNeighbors(spe, 
                           colPairName = "knn_interaction_graph", 
@@ -319,7 +326,7 @@ plotSpatial(spe,
 Also here, we can visualize the cell type composition of each cellular
 neighborhood in different ways. 
 
-```{r}
+```{r heatmap-1-exp}
 for_plot <- prop.table(table(as.character(spe$cn_expression), spe$celltype), margin = 1)
 
 pheatmap(for_plot, 
@@ -327,7 +334,7 @@ pheatmap(for_plot,
          scale = "column")
 ```
 
-```{r}
+```{r heatmap-2-exp}
 for_plot <- prop.table(table(as.character(spe$cn_expression), spe$celltype), margin = 2)
 
 pheatmap(for_plot, 
@@ -337,8 +344,7 @@ pheatmap(for_plot,
          number_format = "%.2f")
 ```
 
-```{r, fig.height=8, fig.width=10}
-# plotSpatial for CN
+```{r spatial-cn-exp, fig.height=8, fig.width=10}
 plotSpatial(spe[,spe$sample_id == "Patient1_003"],
             img_id = "cn_expression", 
             node_color_by = "celltype", 
@@ -348,7 +354,7 @@ plotSpatial(spe[,spe$sample_id == "Patient1_003"],
 
 When clustering cells based on the mean expression within the direct
 neighborhood, tumor cells are split across CN 6, CN 1 and CN 4 without
-forming a clear tumor/stroma border. This result reflects
+forming a clear tumor/stroma border. This result likely reflects
 patient-to-patient differences in the expression of tumor markers.
 
 CN 3 again contains B cells and BnT cells but also CD8 and undefined
@@ -363,7 +369,7 @@ types up front.
 
 An alternative to the `aggregateNeighbors` function is provided by the
 [lisaClust](https://bioconductor.org/packages/release/bioc/html/lisaClust.html)
-Bioconductor package [@Patrick2023]. In contrast to `imcRtools`, the
+Bioconductor package. In contrast to `imcRtools`, the
 `lisaClust` package computes local indicators of spatial associations
 (LISA) functions and clusters cells based on those. More precise, the
 package summarizes L-functions from a Poisson point process model to
@@ -382,7 +388,7 @@ library(lisaClust)
 set.seed(22)
 spe <- lisaClust(spe, 
                  k = 6,
-                 Rs = c(10, 20, 50, 80),
+                 Rs = c(10, 20, 50),
                  spatialCoords = c("Pos_X", "Pos_Y"),
                  cellType = "celltype",
                  regionName = "cn_point",
@@ -395,7 +401,7 @@ plotSpatial(spe,
     scale_color_brewer(palette = "Set3")
 ```
 
-```{r}
+```{r heatmap-1-pp}
 for_plot <- prop.table(table(as.character(spe$cn_point), spe$celltype), margin = 1)
 
 pheatmap(for_plot, 
@@ -403,7 +409,7 @@ pheatmap(for_plot,
          scale = "column")
 ```
 
-```{r}
+```{r heatmap-2-pp}
 for_plot <- prop.table(table(as.character(spe$cn_point), spe$celltype), margin = 2)
 
 pheatmap(for_plot, 
@@ -413,7 +419,7 @@ pheatmap(for_plot,
          number_format = "%.2f")
 ```
 
-```{r, fig.height=8, fig.width=10}
+```{r spatial-cn-pp, fig.height=8, fig.width=10}
 # plotSpatial for CN
 plotSpatial(spe[,spe$sample_id == "Patient1_003"],
             img_id = "cn_point", 
@@ -422,21 +428,18 @@ plotSpatial(spe[,spe$sample_id == "Patient1_003"],
     scale_color_manual(values = metadata(spe)$color_vectors$celltype)
 ```
 
-In this case, CN 1 and 4 contain tumor cells but no CN is forming the
-tumor/stroma border. CN 3 indicates TLS. CN 2 indicates T cell
-subtypes and plasma cells are aggregated to CN 5.
+In this case, CN 6 largely contains tumor cells but no CN is forming the
+tumor/stroma border. CN 5 indicates TLS-like structures. CN 4 indicates T cell
+subtypes and plasma cells are aggregated to CN 2.
 
 
 ## Cell-to-cell interaction analysis
 
-The following section describes how to observe and test the average
-number of interactions between cell labels (e.g. cell-types) within
-grouping levels (e.g. images). For full descriptions of the testing
-approaches, please refer to [Shapiro et al., Nature
-Methods](https://www.nature.com/articles/nmeth.4391) [@Shapiro2017] and
-[Schulz et al., Cell
-Systems](https://www.sciencedirect.com/science/article/pii/S2405471217305434)
-[@Schulz2018]
+The following section focuses on local cell-to-cell interactions. We describe 
+how to observe and test the average number of interactions between 
+cell labels (e.g. cell-types) within grouping levels (e.g. images) using permutation-
+based testing. For the first descriptions of the testing approaches, 
+please refer to [Shapiro et al., Nature Methods](https://www.nature.com/articles/nmeth.4391).
 
 The `imcRtools` package exports the `countInteractions` and
 `testInteractions` functions, which summarize all cell-cell interactions
@@ -446,9 +449,9 @@ among all grouping levels. Missing entries or `NA`s indicate missing
 cell-type labels for this grouping level. The next section gives details
 on how interactions are summarized.
 
-The `countInteractions` function counts the number of edges
-(interactions) between each set of unique cell labels per grouping
-level. Simplified, it counts for each cell of type A the number of
+The [countInteractions](https://bodenmillergroup.github.io/imcRtools/reference/countInteractions.html) 
+function counts the number of edges (interactions) between each set of unique cell 
+labels per grouping level. Simplified, it counts for each cell of type A the number of
 neighbors of type B. This count is averaged within each unique grouping
 level (e.g. image) in four different ways:
 
@@ -470,8 +473,8 @@ level (e.g. image) in four different ways:
     neighbors of type B?"
 
 4.  `method = "interaction"`: The count is divided by the total number of 
-    interactions from cell type A. The final count can be interpreted as the 
-    fraction of interactions of cell type A that occur with cell type B.
+    interactions from cell type A. The final count can be interpreted as "The 
+    fraction of interactions of cell type A that occur with cell type B."
 
 The `countInteractions` returns a `DataFrame` containing the summarized
 counts (`ct`) for all combinations of `from_label`, `to_label` and
@@ -488,10 +491,9 @@ head(out)
 
 In the next instance, one can test if the obtained count is larger or
 smaller compared to what is expected from a random distribution of cell
-labels. For this, the `testInteractions` function permutes the cell
-labels `iter` times and counts interactions as described above. This
-approach generates a distribution of the interaction count under a
-random distribution of cell labels. The observed interaction count is
+labels. For this, the [testInteractions](https://bodenmillergroup.github.io/imcRtools/reference/testInteractions.html) function permutes the cell labels `iter` times (default: 1000) and counts interactions 
+as described above. This approach generates a distribution of the interaction count 
+under a random distribution of cell labels. The observed interaction count is
 compared against this Null distribution to derive empirical p-values:
 
 `p_gt`: fraction of perturbations equal or greater than the observed
@@ -499,12 +501,13 @@ count
 
 `p_lt`: fraction of perturbations equal or less than the observed count
 
+`zscore`: (observed count - mean of permuted counts) / sd of permuted counts
+
 Based on these empirical p-values, the `interaction` score (attraction
 or avoidance), overall `p` value and significance by comparison to
 `p_treshold` (`sig` and `sigval`) are derived. All results are returned
-in form of a `DataFrame`.
-
-We set the seed within the `SerialParam` function for reproducibility. 
+in form of a `DataFrame`. We set the seed within the `SerialParam` function 
+for reproducibility. 
 
 ```{r testInteractions}
 library(BiocParallel)
@@ -543,41 +546,24 @@ out %>% as_tibble() %>%
 In the plot above the red tiles indicate cell type pairs that were detected to 
 significantly interact on a large number of images. On the other hand, blue
 tiles show cell type pairs which tend to avoid each other on a large number 
-of images. 
-
-Here we can observe that tumor cells are mostly compartmentalized and are in
+of images. We can observe that tumor cells are mostly compartmentalized and are in
 avoidance with other cell types. As expected, B cells interact with BnT cells; 
 regulatory T cells interact with CD4+ T cells and CD8+ T cells. Most cell types
 show self interactions indicating spatial clustering. 
 
-
-We can also use the `plotInteractions` function is used to visualize interaction networks from an
-edge list, typically the output of the `testInteractions` function. 
+We can also use the `plotInteractions` function to visualize interaction networks 
+from an edge list, typically the output of the `testInteractions` function. 
 
 Before visualization, the edge list can be filtered to focus on relevant 
 cell-cell interactions, groupings, and significance.
 
-In the example below we retain interactions whose fraction of significant pairs
-(based on sigval) exceeds 75% and tag the edges as attraction or repulsion.
+In the example below we retain interactions who are significant in more than 
+70% of images tag the edges as attraction or repulsion.
 
-You can customize node and edge aesthetics directly using `plotInteractions`
+We will also customize node and edge aesthetics directly using `plotInteractions`
 arguments. The plot can also be modified further using `ggplot2` syntax.
-Node properties such as color, shape, and size can be controlled using
-`scale_color_*`, `scale_shape_*` and `scale_size_*`. Edge aesthetics can be 
-modified using `scale_edge_*` functions from `ggraph`.
 
-To color edges based on subsetted significant interaction type (attraction, repulsion), 
-specify the `int_type` column via `edge_color_by`, and use `scale_edge_colour_manual()` 
-for custom colors.
-
-You can also control edge thickness via `edge_width_by`. For example, "ct" 
-represents the summarized interaction count derived from `countInteractions` 
-or `testInteractions`, averaged per cell-pair and grouping level. 
-In our example, the "ct" value refers to the average neighboring cells of 
-cell type B from cell type A averaged across all images.
-
-
-```{r plotInteractions-filter data}
+```{r plotInteractions-filter data, fig.height=8, fig.width=10}
 library(dplyr)
 library(ggraph)
 
@@ -603,7 +589,7 @@ subset_out <- out %>%
   semi_join(summary_df, by = "pair_id") %>%
   left_join(summary_df %>% select(pair_id, int_type), by = "pair_id")
 
-edge_color <- setNames(c("red", "blue"),c("attraction", "repulsion"))
+edge_color <- setNames(c("red3", "blue3"),c("attraction", "repulsion"))
 
 # Now we can visualize only these filtered edges
 plotInteractions(subset_out,
@@ -619,42 +605,44 @@ plotInteractions(subset_out,
     scale_edge_colour_manual(values = edge_color)
 ```
 
-TEXT TO DO
+We can again observe that most cell types are significantly self-interacting. Tumor cells
+are very compartmentalized and void other cell types. Of note, B cells also interact with BnT cells, 
+likely driven by TLS-like structures, and Tregs interact significantly with CD4+ T cells and CD8+ T cells.
 
 
 # Supervised spatial analysis 
 
 ## Patch detection 
 
-The previous section focused on detecting cellular neighborhoods in a rather
-unsupervised fashion. However, the `imcRtools` package also provides methods for
-detecting spatial compartments in a supervised fashion. The
+The previous section focused on detecting cellular neighborhoods and cell-to-cell
+interactions in a rather unsupervised fashion. However, the `imcRtools` package 
+also provides methods for detecting spatial compartments in a supervised fashion. The
 [patchDetection](https://bodenmillergroup.github.io/imcRtools/reference/patchDetection.html)
 function allows the detection of connected sets of similar cells as proposed by
-[Hoch et al.](https://www.science.org/doi/10.1126/sciimmunol.abk1692). In the following example, we will use the `patchDetection` function
-to detect function to detect tumor patches in three steps:
+[Hoch et al.](https://www.science.org/doi/10.1126/sciimmunol.abk1692). In the following example, we will use the `patchDetection` function to detect function to detect TLS-like structures in three steps:
 
-1. Find connected sets of tumor cells (using the `steinbock` graph).  
+1. Find connected sets of BnT cells (using the `steinbock` graph).  
 2. Components which contain less than 10 cells are excluded.  
 3. Expand the components by 2µm to construct a concave hull around the patch and
 include cells within the patch.
 
-
-```{r patchDetection-1, fig.height=12, fig.width=12}
+```{r patchDetection, fig.height=12, fig.width=12}
 spe <- patchDetection(spe, 
                       patch_cells = spe$celltype == "BnTcell",
                       img_id = "sample_id",
-                      expand_by = 1,
+                      expand_by = 2,
                       min_patch_size = 10,
                       colPairName = "neighborhood", 
                       BPPARAM = SerialParam(RNGseed = 22))
 
-# Cell types
+# BnT cells
+spe$celltype_BnT <- ifelse(spe$celltype %in% c("BnTcell"),"BnTcell", "Other")
 plotSpatial(spe, 
-            node_color_by = "celltype", 
+            node_color_by = "celltype_BnT", 
             img_id = "sample_id", 
             node_size_fix = 0.5) + 
     scale_color_manual(values = metadata(spe)$color_vectors$celltype)
+
 
 # Patch detection
 plotSpatial(spe, 
@@ -664,76 +652,97 @@ plotSpatial(spe,
     theme(legend.position = "none") 
 ```
 
-
-We will annotate the images with BnT cell patches as a surrogate for tertiary lymphoid (TLS)-like structures. 
-
-```{r}
-patch_images <- colData(spe) %>% as_tibble() %>%
-    filter(!is.na(patch_id)) %>% 
-    pull(sample_id) %>% 
-    unique()
-
-spe$TLS_like <- ifelse(spe$sample_id %in% patch_images, "TLS_like", "No_TLS_like")
-```
-
-Check for B cells interactions
-
-```{r}
-# TLS_like 
-out$TLS <- spe$TLS_like[match(out$group_by, spe$sample_id)] 
-
-out %>% filter(pair_id == "BnTcell__Bcell") %>%
-ggplot()+
-    facet_wrap(~pair_id)+
-    geom_boxplot(aes(TLS, zscore, fill = TLS), outliers = FALSE)+
-    scale_fill_brewer(palette = "Set2")+
-    theme_classic()
-```
-
-NEXT...
-To calculate the min, max, mean or median distance for each cell to a given cell type or class of
+Next, we can use the [distToCells](https://bodenmillergroup.github.io/imcRtools/reference/distToCells.html) 
+to calculate the min, max, mean or median distance for each cell to a given cell type or class of
 cells of interest, the function `distToCells` is available. Cells of interest
-are defined via the `x_cells` parameter as `logical` and distances to for all
+are defined via the `x_cells` parameter as `logical` (e.g. patches) and distances to for all
 cells to those cells will be reported in a new column in the `colData` of the
 `SingleCellExperiment`.
 
 If the cells of interest form patches (many cells of the same type next to each
 other) or similarly if a patch detection has previously been performed the
-positive distances reflect the distances from cells outside of patches (or non cells of interest) to the patch cells (or cells of interest) and the negative distances reflect the distances from cells
-inside the patches to the cells outside the patches.
-For `statistics` = "min" this corresponds to the distance from the cells outside to the closest point on the patch border and from the cells inside to the closest point on the patch border.
-If `return_neg` is set to `FALSE`, distances from the cells of interest (or cells inside the patches) to non cells of interest are computed as positive distances.
+positive distances reflect the distances from cells outside of patches (or non cells of interest) 
+to the patch cells (or cells of interest) and the negative distances reflect the distances from cellsinside the patches to the cells outside the patches. For `statistics` = "min" this corresponds to the distance from the cells outside to the closest point on the patch border and from the cells inside to the closest point on the patch border.
 
+Here, we will calculate the minimum distance to TLS-like patches.
 
 ```{r minDistCells, fig.height=12, fig.width=12}
 spe <- distToCells(spe, 
                    x_cells = !is.na(spe$patch_id), 
                    img_id = "sample_id")
 
-plotSpatial(spe[,spe$sample_id %in% patch_images], 
+plotSpatial(spe, 
             node_color_by = "distToCells", 
             img_id = "sample_id", 
             node_size_fix = 1) +
     scale_color_gradient2(low = "dark blue", mid = "white", high = "dark red")
 ```
 
-Finally, we can  observe the minimum distances to TLS-like patches in a cell type specific
+Finally, we can observe the minimum distances to TLS-like patches in a cell type specific
 manner.
 
 ```{r celltype-distance, warning = FALSE, message=FALSE}
 library(ggridges)
-ggplot(as.data.frame(colData(spe)) %>% filter(TLS_like == "TLS_like")) + 
+ggplot(as.data.frame(colData(spe))) + 
     geom_density_ridges(aes(distToCells, celltype, fill = celltype)) +
     geom_vline(xintercept = 0, color = "black", linewidth = 1) +
     scale_fill_manual(values = metadata(spe)$color_vectors$celltype)+
     theme_classic()
 ```
 
+## Differential interaction testing 
+
+Lastly, one can be interested in detecting differential interactions between 
+conditions of interest (e.g. images with TLS-like structures and ones without). 
+Different statistical approaches have been proposed for differential interaction testing 
+including ones based on point-pattern testing such as the [spicyR](https://bioconductor.org/packages/release/bioc/html/spicyR.html) 
+R/Bioconductor package and permutation-based ones such as the ones featured in
+`imcRtools`. 
+
+Here, we will make use of our permutation-based testing results from the 
+`testInteraction` function. For this, we will annotate the images with BnT cell 
+patches as a surrogate for TLS-like structures and add this to the 
+output `DataFrame` from our `testInteraction` results. 
+
+```{r TLS-anno}
+# Annotate images with TLS-like patch
+patch_images <- colData(spe) %>% as_tibble() %>%
+    filter(!is.na(patch_id)) %>% 
+    pull(sample_id) %>% 
+    unique()
+
+spe$TLS_like <- ifelse(spe$sample_id %in% patch_images, "TLS_like", "No_TLS_like")
+
+# Add to cell-to-cell interaction findings
+out$TLS <- spe$TLS_like[match(out$group_by, spe$sample_id)] 
+```
+
+We can then compare the `zscore`, observed count - mean of permuted counts) / sd of permuted counts, 
+from permutaton testing for cell-type pairs of interest. Specifically, we will look at interactions
+from BnT cells to themselves (homotypic interaction) but also B cells/tumor cells (heterotypic interaction).
+
+```{r TLS-diffinteraction, warning = FALSE}
+out_filtered <- out %>% filter(pair_id %in% c("BnTcell__BnTcell", "BnTcell__Bcell", "BnTcell__Tumor"))
+
+library(ggpubr)  
+ggplot(out_filtered, aes(TLS, zscore, fill = TLS))+
+    facet_wrap(~pair_id)+
+    geom_boxplot(, outliers = FALSE)+
+    scale_fill_brewer(palette = "Set2")+
+    theme_classic()+
+    stat_compare_means()
+```
+
+As expected, we observe trends for B cell interactions but tumor avoidance in images with 
+TLS-like structures. This analysis can be expanded for other cell type pairs
+and highlights the need for clear biological rationales for (supervised) spatial 
+analysis. 
+
 # Save objects
 
 Finally, the generated data objects can be saved. 
 
-```{r save-objects-read-data}
+```{r save-objects}
 saveRDS(spe, "data/spe.rds")
 ```
 
