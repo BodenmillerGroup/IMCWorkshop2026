@@ -432,7 +432,6 @@ In this case, CN 6 largely contains tumor cells but no CN is forming the
 tumor/stroma border. CN 5 indicates TLS-like structures. CN 4 indicates T cell
 subtypes and plasma cells are aggregated to CN 2.
 
-
 ## Cell-to-cell interaction analysis
 
 The following section focuses on local cell-to-cell interactions. We describe 
@@ -555,13 +554,11 @@ We can also use the `plotInteractions` function to visualize interaction network
 from an edge list, typically the output of the `testInteractions` function. 
 
 Before visualization, the edge list can be filtered to focus on relevant 
-cell-cell interactions, groupings, and significance.
-
-In the example below we retain interactions who are significant in more than 
-70% of images tag the edges as attraction or repulsion.
-
-We will also customize node and edge aesthetics directly using `plotInteractions`
-arguments. The plot can also be modified further using `ggplot2` syntax.
+cell-cell interactions, groupings, and significance. In the example below, 
+we retain interactions which are significant in more than 70% of images 
+and tag the edges as attraction or repulsion. We will also customize node and 
+edge aesthetics directly using `plotInteractions` arguments. The plot can also 
+be modified further using `ggplot2` syntax.
 
 ```{r plotInteractions-filter data, fig.height=8, fig.width=10}
 library(dplyr)
@@ -608,7 +605,6 @@ plotInteractions(subset_out,
 We can again observe that most cell types are significantly self-interacting. Tumor cells
 are very compartmentalized and void other cell types. Of note, B cells also interact with BnT cells, 
 likely driven by TLS-like structures, and Tregs interact significantly with CD4+ T cells and CD8+ T cells.
-
 
 # Supervised spatial analysis 
 
