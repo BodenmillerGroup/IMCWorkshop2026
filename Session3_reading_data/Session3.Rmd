@@ -1,6 +1,6 @@
 ---
 title: 'Session 3: Reading in data and visualization'
-author: "Nils Eling"
+author: "Nils Eling (Adopted from Daniel Schulz / Lasse Meyer)"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -57,7 +57,7 @@ in with the `read_steinbock` function provided by `imcRtools`. For more
 information, please refer to `?read_steinbock`.
 
 ```{r read-steinbock}
-spe <- read_steinbock("data/steinbock/", panel_file = "panel_backup.csv")
+spe <- read_steinbock("data/steinbock/")
 spe
 ```
 
@@ -513,7 +513,7 @@ samples or batches of samples. In addition, patients were diagnosed with differe
 cancer types. We will use ridgeline visualizations to check
 differences in staining patterns and biological differences in expression:
 
-```{r ridges, message=FALSE, fig.width=7, fig.height=25}
+```{r ridges, warning = FALSE, message=FALSE, fig.width=7, fig.height=25}
 multi_dittoPlot(spe, vars = rownames(spe)[rowData(spe)$use_channel],
                group.by = "patient_id", plots = "ridgeplot", 
                assay = "exprs", 
@@ -623,7 +623,7 @@ plotSpatial(spe[,grepl("Patient3", spe$sample_id)],
     ggtitle("E-cadherin expression")
 ```
 
-# Image visualization
+# Static image visualization
 
 The following section highlights the use of the `r BiocStyle::Biocpkg("cytomapper")` package to visualize multichannel images and
 segmentation masks. For visualization purposes we select 3 images from the 
@@ -631,10 +631,11 @@ dataset:
 
 ```{r select-images, message=FALSE}
 # Sample images
-set.seed(220517)
+set.seed(22)
 cur_id <- sample(unique(spe$sample_id), 3)
 cur_images <- images[names(images) %in% cur_id]
 cur_masks <- masks[names(masks) %in% cur_id]
+cur_spe <- spe[,spe$sample_id %in% cur_id]
 ```
 
 ## Pixel visualization 
@@ -785,7 +786,7 @@ plotCells(cur_masks,
           exprs_values = "exprs")
 ```
 
-## Segmentation quality control {#seg-quality}
+## Segmentation quality control
 
 We can now use the `plotPixels` function to outline segmented cells on image
 composites to observe segmentation accuracy. Without having ground-truth data
@@ -799,16 +800,13 @@ normalization (channels are first min-max normalized and scaled to a range of
 
 ```{r overlay-masks, message=FALSE}
 library(cytomapper)
-set.seed(20220118)
-img_ids <- sample(seq_len(length(images)), 3)
 
 # Normalize and clip images
-cur_images <- images[img_ids]
-cur_images <- normalize(cur_images, separateImages = TRUE)
-cur_images <- normalize(cur_images, inputRange = c(0, 0.2))
+norm_images <- normalize(cur_images, separateImages = TRUE)
+norm_images <- normalize(norm_images, inputRange = c(0, 0.2))
 
-plotPixels(cur_images,
-           mask = masks[img_ids],
+plotPixels(norm_images,
+           mask = cur_masks,
            img_id = "sample_id",
            missing_colour = "white",
            colour_by = c("CD163", "CD20", "CD3", "Ecad", "DNA1"),
@@ -828,7 +826,47 @@ epithelial cells - in cyan) _versus_ small (e.g. B cells - in red). However, the
 segmentation approach here appears to correctly segment cells across different
 sizes.
 
-## Save objects
+# Interactive image visualization
+
+The [cytoviewer](https://link.springer.com/article/10.1186/s12859-023-05546-z)
+R/Bioconductor package extends the static visualization
+abilities from `cytomapper` via an interactive and user-friendly `shiny`
+application.
+
+It supports flexible generation of image composites, allows side-by-side
+visualization of single channels, and facilitates the spatial
+visualization of single-cell data in the form of segmentation masks.
+Rapid and publication-quality image downloads are also supported. For a
+full introduction to the package, please refer to 
+[the vignette](https://bioconductor.org/packages/release/bioc/vignettes/cytoviewer/inst/doc/cytoviewer.html).
+
+The cytoviewer GUI has three main parts: body, sidebar, and header. The body
+of cytoviewer features the image viewer. The viewer can switch between image-level
+visualization, which shows the pixel-level intensities of all selected markers either combined
+(Composite) or separately (Channels), and cell-level visualization, which displays
+cell-level information on segmentation masks (Masks). Controls for sample selection, 
+and settings for image and mask visualization are found in the sidebar menu. The header 
+section contains the package version, R session information, a help page, and a 
+drop-down menu for image downloads.
+
+Here, we run the app for the 3 selected images. Please get familiar with the 
+interactive user interface. 
+
+```{r cytoviewer-interactive, message = FALSE}
+library(cytoviewer)
+
+app <- cytoviewer(image = cur_images,
+                  mask = cur_masks,
+                  object = cur_spe,
+                  cell_id = "ObjectNumber",
+                  img_id = "sample_id")
+
+if (interactive()) {
+    shiny::runApp(app)
+}
+```
+
+# Save objects
 
 Finally, the generated data objects can be saved for further downstream 
 processing and analysis.
@@ -839,7 +877,7 @@ saveRDS(images, "data/images.rds")
 saveRDS(masks, "data/masks.rds")
 ```
 
-## Obtaining public IMC datasets
+# Obtaining public IMC datasets
 
 The [imcdatasets](https://bioconductor.org/packages/release/data/experiment/html/imcdatasets.html) 
 R/Bioconductor package provides publicly available IMC datasets in form 

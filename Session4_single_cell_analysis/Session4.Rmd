@@ -1,6 +1,6 @@
 ---
 title: "Session 4: single-cell analysis"
-author: "Nils Eling"
+author: "Nils Eling (Adopted from Daniel Schulz / Lasse Meyer)"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -10,6 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 Session 4 of the Multiplexed Tissue Imaging Workshop focuses on single-cell
@@ -18,6 +19,8 @@ spillover correction before highlighting a batch correction approach and
 cell phenotyping.
 
 # Spillover correction
+
+#TODO: UPDATE FOR XTI DATA AND IF DONE ON IMAGE-LEVEL WE COULD SHORTEN THIS SECTION
 
 Small levels of channel-to-channel spillover occurs specifically in IMC
 which can be corrected for assuming a linear relationship between the 
@@ -119,7 +122,7 @@ The general workflow for pixel debarcoding is as follows:
 positive and negative pixel sets
 3. apply the estimated cutoffs to identify truly positive pixels
 
-```{r debarcoding, message=FALSE}
+```{r debarcoding, warning = FALSE, message=FALSE}
 library(CATALYST)
 
 bc_key <- as.numeric(unique(sce$sample_mass))
@@ -214,6 +217,8 @@ spe <- compCytof(spe, sm,
                  transform = TRUE, cofactor = 1,
                  isotope_list = isotope_list, 
                  overwrite = FALSE)
+
+spe
 ```
 
 To check the effect of channel spillover compensation, the expression of markers
@@ -284,6 +289,8 @@ The adpated spillover matrix now matches the `channelNames` of the
 `CytoImageList` object and can be used to perform pixel-level spillover
 compensation.
 
+#TODO: THIS CALL TAKES LONG - MAYBE BETTER TO SHOW IMAGE COMPENSATION DIRECTLY VIA VICTOR APPROACH?
+
 ```{r image-compensation, message = FALSE}
 library(BiocParallel)
 library(parallel)
@@ -295,18 +302,19 @@ images_comp <- compImage(images, adapted_sm,
 As a sanity check, we will visualize the image before and after compensation:
 
 ```{r image-visualization}
-# Before compensation
+# Before and after compensation
+## Ecad
 plotPixels(images[5], colour_by = "Yb173Di", 
            image_title = list(text = "Yb173 (Ecad) - before", position = "topleft"), 
            legend = NULL, bcg = list(Yb173Di = c(0, 4, 1)))
-plotPixels(images[5], colour_by = "Yb174Di", 
-           image_title = list(text = "Yb174 (CD303) - before", position = "topleft"), 
-           legend = NULL, bcg = list(Yb174Di = c(0, 4, 1)))
-
-# After compensation
 plotPixels(images_comp[5], colour_by = "Yb173Di",
            image_title = list(text = "Yb173 (Ecad) - after", position = "topleft"), 
            legend = NULL, bcg = list(Yb173Di = c(0, 4, 1)))
+
+## CD303
+plotPixels(images[5], colour_by = "Yb174Di", 
+           image_title = list(text = "Yb174 (CD303) - before", position = "topleft"), 
+           legend = NULL, bcg = list(Yb174Di = c(0, 4, 1)))
 plotPixels(images_comp[5], colour_by = "Yb174Di", 
            image_title = list(text = "Yb174 (CD303) - after", position = "topleft"),
            legend = NULL, bcg = list(Yb174Di = c(0, 4, 1)))
@@ -569,7 +577,7 @@ dittoHeatmap(spe[,cur_cells],
 ```
 
 We can observe that some of the clusters only contain cells of a single patient.
-This  can often be observed in the tumor compartment. In the next step, we
+This can often be observed in the tumor compartment. In the next step, we
 use the integrated cells in low dimensional
 embedding for clustering. Here, the low dimensional embedding can
 be directly accessed from the `reducedDim` slot.
@@ -611,7 +619,9 @@ on ground truth labeling and random forest classification. The rational for
 this supervised cell phenotyping approach is to use the information contained
 in the pre-defined markers to detect cells of interest. This approach was
 used by Hoch _et al._ (2022) to classify cell types in a metastatic melanoma IMC
-dataset.
+dataset. 
+
+#TODO: Update publications (IMMUcan and CellTune) - Best methods in benchmarks?
 
 The antibody panel used in the example data set mainly focuses on immune cell
 types and little on tumor cell phenotypes. Therefore we will label the following
@@ -758,6 +768,8 @@ only need to estimate a single parameters (`mtry`) which corresponds to the
 number of variables randomly sampled as candidates at each split. To estimate
 the best parameter, we will perform a 5-fold cross validation (set within
 `trainControl`) over a tune length of 5 entries to `mtry`.
+
+#TODO: This training also takes quite long
 
 ```{r train-classifier, message=FALSE}
 library(caret)
@@ -953,7 +965,7 @@ spe$celltype <- cell_labels
 table(spe$celltype, spe$patient_id)
 ```
 
-## Cell phenotype visualization
+## Visualization of cell phenotypes
 
 After classifying cells based on their phenotype in the dataset we will need to
 perform quality control to ensure correct labelling.
@@ -985,11 +997,15 @@ dittoHeatmap(spe[,cur_cells],
 ```
 
 We can now also visualize the differences in cell phenotypes between patients 
-in form of barplots.
+and images in form of barplots.
 
 ```{r barplot}
 # by patient_id - percentage
 dittoBarPlot(spe, var = "celltype", group.by = "patient_id") +
+    scale_fill_manual(values = metadata(spe)$color_vectors$celltype)
+
+# by sample_id - percentage
+dittoBarPlot(spe, var = "celltype", group.by = "sample_id") +
     scale_fill_manual(values = metadata(spe)$color_vectors$celltype)
 ```
 
@@ -999,14 +1015,17 @@ again three images.
 
 ```{r celltype}
 # Sample images
-set.seed(220517)
+set.seed(22)
 cur_id <- sample(unique(spe$sample_id), 3)
 cur_images <- images_comp[names(images_comp) %in% cur_id]
 cur_masks <- masks[names(masks) %in% cur_id]
+cur_spe <- spe[,spe$sample_id %in% cur_id]
 
 plotCells(cur_masks,
-          object = spe, 
-          cell_id = "ObjectNumber", img_id = "sample_id",
+          object = cur_spe, 
+          cell_id = "ObjectNumber", 
+          img_id = "sample_id",
+          colour = list(celltype = metadata(cur_spe)$color_vectors$celltype),
           colour_by = "celltype")
 ```
 
@@ -1030,7 +1049,7 @@ plotPixels(image = cur_images,
            thick = TRUE)
 ```
 
-For easier visualization the plot can also be written out:
+The plot can also be saved:
 
 ```{r write-out-plot}
 if (!dir.exists("data/CellValidation")) dir.create("data/CellValidation")
@@ -1047,6 +1066,24 @@ plotPixels(image = cur_images,
            thick = TRUE,
            save_plot = list(filename = "data/CellValidation/CD8.png"))
 ```
+
+For easier interactive visualization of cell phenotyping results, we can again use 
+the `cytoviewer` package. 
+
+```{r cytoviewer-interactive, message = FALSE}
+library(cytoviewer)
+
+app <- cytoviewer(image = cur_images,
+                  mask = cur_masks,
+                  object = cur_spe,
+                  cell_id = "ObjectNumber",
+                  img_id = "sample_id")
+
+if (interactive()) {
+    shiny::runApp(app)
+}
+```
+
 
 ## Save objects
 
