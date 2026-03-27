@@ -43,7 +43,7 @@ cell-to-cell interactions. Methods can also be broadly divided into
 unsupervised and supervised spatial methods. 
 
 Many approaches either compare the observed versus expected number of cells 
-around a given cell type ("point process") or utilize interaction graphs 
+around a given cell type ("point pattern") or utilize interaction graphs 
 ("spatial object graphs") to estimate clustering or interaction frequencies
 between cell types.
 
@@ -52,9 +52,9 @@ between cell types.
 The [steinbock](https://bodenmillergroup.github.io/steinbock/latest/cli/measurement/) 
 framework allows the construction of these spatial graphs. During image 
 processing, we have constructed a spatial graph by expanding the individual cell 
-masks by 4 pixels. 
+masks borders by 4 pixels. 
 
-The `imcRtools` package further allows the *ad hoc* consctruction of spatial
+The `imcRtools` package further allows the *ad hoc* construction of spatial
 graphs directly using a `SpatialExperiment` or `SingleCellExperiment` object
 while considering the spatial location (here centroids) of individual cells. The
 [buildSpatialGraph](https://bodenmillergroup.github.io/imcRtools/reference/buildSpatialGraph.html)
@@ -432,6 +432,7 @@ In this case, CN 6 largely contains tumor cells but no CN is forming the
 tumor/stroma border. CN 5 indicates TLS-like structures. CN 4 indicates T cell
 subtypes and plasma cells are aggregated to CN 2.
 
+
 ## Cell-to-cell interaction analysis
 
 The following section focuses on local cell-to-cell interactions. We describe 
@@ -698,7 +699,7 @@ R/Bioconductor package and permutation-based ones such as the ones featured in
 Here, we will make use of our permutation-based testing results from the 
 `testInteraction` function. For this, we will annotate the images with BnT cell 
 patches as a surrogate for TLS-like structures and add this to the 
-output `DataFrame` from our `testInteraction` results. 
+output `DataFrame` from our `testInteraction` results, called `out`. 
 
 ```{r TLS-anno}
 # Annotate images with TLS-like patch
@@ -715,10 +716,10 @@ out$TLS <- spe$TLS_like[match(out$group_by, spe$sample_id)]
 
 We can then compare the `zscore`, observed count - mean of permuted counts) / sd of permuted counts, 
 from permutaton testing for cell-type pairs of interest. Specifically, we will look at interactions
-from BnT cells to themselves (homotypic interaction) but also B cells/tumor cells (heterotypic interaction).
+from BnT cells to themselves (homotypic interaction).
 
 ```{r TLS-diffinteraction, warning = FALSE}
-out_filtered <- out %>% filter(pair_id %in% c("BnTcell__BnTcell", "BnTcell__Bcell", "BnTcell__Tumor"))
+out_filtered <- out %>% filter(pair_id %in% c("BnTcell__BnTcell"))
 
 library(ggpubr)  
 ggplot(out_filtered, aes(TLS, zscore, fill = TLS))+
@@ -741,6 +742,47 @@ Finally, the generated data objects can be saved.
 ```{r save-objects}
 saveRDS(spe, "data/spe.rds")
 ```
+
+# Tasks
+
+**TASK 1 - Spatial visualization**: 
+A) Visualize the cell type composition of CN3 across all images. 
+B) Visualize CD20 expression for CN3 across all images. 
+
+**TASK 2 - Cellular neighborhood analysis**: 
+Compare single cell assignments between different cellular neighborhood approaches 
+by visualizing the number of cells that are shared between different results 
+in a pairwise fashion. Which cellular neighborhoods are conserved between methods?
+
+**TASK 3 - Cell-to-cell interaction analysis**: 
+Perform cell-to-cell interaction analysis with a different counting approach 
+and compare your findings. Does the interpretation change? 
+
+**TASK 4 - Patch detection and differential interaction testing**:
+A) Compare the zscore of heterotypic interactions of BnT cells to 
+B cells and tumor cells between images with and without TLS-like structures. 
+What do you observe? 
+B) Perform patch detection for tumor cells and visualize the results. 
+
+# Further reading
+Various other spatial analysis approaches are available. Find a selection of 
+some approaches below for further reading:
+
+**Cellular neighborhood analysis**
+Non-deep learning methods: 
+[Spatial-LDA](https://journals.sagepub.com/doi/10.1089/cmb.2019.0340)
+
+Deep learning methods: 
+[CellCharter](https://www.nature.com/articles/s41588-023-01588-4)
+[CelloHood](https://www.biorxiv.org/content/10.1101/2025.11.10.687184v1)
+[Space-GM](https://www.nature.com/articles/s41551-022-00951-w)
+[CytoCommunity](https://www.nature.com/articles/s41592-023-02124-2)
+
+**Cell-to-cell interaction analysis**
+Point-pattern based methods: 
+[spicyR](https://bioconductor.org/packages/release/bioc/html/spicyR.html) 
+[Kontextual](https://www.cell.com/cell-reports-methods/fulltext/S2667-2375(25)00211-5)
+[SpatioPath](https://www.nature.com/articles/s41467-025-57943-y) 
 
 # Session info
 
