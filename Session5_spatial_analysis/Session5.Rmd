@@ -39,8 +39,8 @@ spe <- readRDS("data/spe.rds")
 
 Spatial relationships take place at different biological length scales 
 and range from more "global" formation of cellular neighborhoods to "local" 
-cell-to-cell interactions. Methods can also be broadly divided into 
-unsupervised and supervised spatial methods. 
+cell-to-cell interactions. Spatial methods can also be broadly divided into more 
+unsupervised and supervised approaches, which we will discuss below.   
 
 Many approaches either compare the observed versus expected number of cells 
 around a given cell type ("point pattern") or utilize interaction graphs 
@@ -188,7 +188,7 @@ plotSpatial(spe,
 For a full documentation on the `plotSpatial` function, please refer to
 `?plotSpatial`.
 
-# Unsupervised spatial analysis
+# Unsupervised spatial analysis {#unsupervised}
 
 In the following section, we will highlight more unsupervised ways for spatial 
 analysis. First, we will focus on "global" cellular neighborhood detection based on 
@@ -462,7 +462,7 @@ level (e.g. image) in four different ways:
 2.  `method = "conditional"`: Formerly named "histocat". 
     The count is divided by the number of cells of type A that have at 
     least one neighbor of type B. The final count can be interpreted as 
-    "How many many neighbors of type B has a cell of type A on average, 
+    "How many neighbors of type B has a cell of type A on average, 
     given it has at least one neighbor of type B?"
 
 3.  `method = "patch"`: For each cell, the count is binarized to 0 (less
@@ -607,7 +607,7 @@ We can again observe that most cell types are significantly self-interacting. Tu
 are very compartmentalized and void other cell types. Of note, B cells also interact with BnT cells, 
 likely driven by TLS-like structures, and Tregs interact significantly with CD4+ T cells and CD8+ T cells.
 
-# Supervised spatial analysis 
+# Supervised spatial analysis {#supervised}
 
 ## Patch detection 
 
@@ -675,8 +675,7 @@ plotSpatial(spe,
     scale_color_gradient2(low = "dark blue", mid = "white", high = "dark red")
 ```
 
-Finally, we can observe the minimum distances to TLS-like patches in a cell type specific
-manner.
+We visualize the minimum distances to TLS-like patches in a cell type specific manner.
 
 ```{r celltype-distance, warning = FALSE, message=FALSE}
 library(ggridges)
@@ -687,7 +686,7 @@ ggplot(as.data.frame(colData(spe))) +
     theme_classic()
 ```
 
-## Differential interaction testing 
+### Differential interaction testing 
 
 Lastly, one can be interested in detecting differential interactions between 
 conditions of interest (e.g. images with TLS-like structures and ones without). 
@@ -746,27 +745,30 @@ saveRDS(spe, "data/spe.rds")
 # Tasks
 
 **TASK 1 - Spatial visualization**: 
-A) Visualize the cell type composition of CN3 across all images. 
+A) Visualize the cell type composition of CN3 (based on celltypes) across all images. 
+Hint: You can use the `plotSpatial` function and the `colData` entry "cn_celltypes". 
 B) Visualize CD20 expression for CN3 across all images. 
 
 **TASK 2 - Cellular neighborhood analysis**: 
 Compare single cell assignments between different cellular neighborhood approaches 
 by visualizing the number of cells that are shared between different results 
 in a pairwise fashion. Which cellular neighborhoods are conserved between methods?
+Hint: You can use `table` and `pheatmap` functions. 
 
 **TASK 3 - Cell-to-cell interaction analysis**: 
 Perform cell-to-cell interaction analysis with a different counting approach 
-and compare your findings. Does the interpretation change? 
+(e.g. `histocat`) and compare your findings. Does the interpretation change? 
 
 **TASK 4 - Patch detection and differential interaction testing**:
-A) Compare the zscore of heterotypic interactions of BnT cells to 
-B cells and tumor cells between images with and without TLS-like structures. 
-What do you observe? 
+A) Visualize and compare the zscore of heterotypic interactions of BnT cells to 
+B cells as well as BnT cells tumor cells between images with and without 
+TLS-like structures. What do you observe? Hint: You can use the `ggplot` function. 
+
 B) Perform patch detection for tumor cells and visualize the results. 
 
 # Further reading
 Various other spatial analysis approaches are available. Find a selection of 
-some approaches below for further reading:
+approaches below for further reading:
 
 **Cellular neighborhood analysis**
 Non-deep learning methods: 
