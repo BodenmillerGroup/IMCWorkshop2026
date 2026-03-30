@@ -188,7 +188,7 @@ plotSpatial(spe,
 For a full documentation on the `plotSpatial` function, please refer to
 `?plotSpatial`.
 
-# Unsupervised spatial analysis {#unsupervised}
+# Unsupervised spatial analysis
 
 In the following section, we will highlight more unsupervised ways for spatial 
 analysis. First, we will focus on "global" cellular neighborhood detection based on 
@@ -607,7 +607,7 @@ We can again observe that most cell types are significantly self-interacting. Tu
 are very compartmentalized and void other cell types. Of note, B cells also interact with BnT cells, 
 likely driven by TLS-like structures, and Tregs interact significantly with CD4+ T cells and CD8+ T cells.
 
-# Supervised spatial analysis {#supervised}
+# Supervised spatial analysis
 
 ## Patch detection 
 
