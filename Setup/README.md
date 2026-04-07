@@ -72,6 +72,11 @@ Once you installed Docker Desktop and it is open and running, go to a terminal o
    docker pull ghcr.io/bodenmillergroup/imc-workshop26-rstudio:latest
    docker pull ghcr.io/bodenmillergroup/steinbock:0.16.5
    ```
+For mac silicon computers (M1-M4):
+```bash
+   docker pull ghcr.io/bodenmillergroup/imc-workshop26-rstudio:latest
+   docker pull ghcr.io/bodenmillergroup/steinbock:0.16.5-cellpose
+   ```
 
 3. navigate into the workshop folder with:
 ```bash
