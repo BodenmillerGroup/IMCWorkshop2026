@@ -17,7 +17,7 @@ For this workshop the following technical prerequisites are required:
 To download the code you can clone the current repository via
 
 ```
-git clone https://github.com/BodenmillerGroup/ImagingWorkshop2026.git
+git clone https://github.com/BodenmillerGroup/IMCWorkshop2026.git
 ```
 
 or you can click the `Code` > `Download ZIP` button.
