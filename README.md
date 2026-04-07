@@ -30,7 +30,7 @@ Please follow the instructions in the [Setup](Setup) folder on how to download t
 | 11.00h      | Hands-on training: image processing                                 |
 | 12.30h      | Lunch                                                               |
 | 13.30h      | Image visualization                                                 |
-| 13.00h      | Hands-on training: image visualization                              |
+| 13.40h      | Hands-on training: image visualization                              |
 | 14.30h      | High-resolution Demo                                                |
 | 15.00h      | Coffee break                                                        |
 | 15.30h      | Reading data into R and visualization                               |
