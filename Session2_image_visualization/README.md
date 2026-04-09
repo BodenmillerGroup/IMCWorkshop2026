@@ -59,8 +59,14 @@ img = tifffile.imread("data/cell_mode/img/Patient1_001.tiff")
 napari.imshow(img)
 ```
 
-## Define Layer Setting in python
-To avoid setting the diplay settting manually everytime you can define them in a python script. Examples of how to do this are given in the `Session2_image_visualization/napari.ipynb` notebook. The examples in the notebook will be reviewed during the tutorial.
+## Define Layer Setting 
+### From the terminal
+```bash
+napari data/cell_mode/img/Patient1_001.tiff --colormap magma --gamma 0.4
+```
+
+### In python
+To avoid setting the display setting manually every time you can define them in a python script. Examples of how to do this are given in the `Session2_image_visualization/napari.ipynb` notebook. The examples in the notebook will be reviewed during the tutorial.
 
 
 Open jupyter lab from your terminal and navigate to the notebook.
